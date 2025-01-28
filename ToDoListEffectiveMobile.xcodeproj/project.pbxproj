@@ -29,9 +29,38 @@
 		C8A40BFA2D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoListEffectiveMobileUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C82FB5692D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Modules/TaskList/Entity/TaskListEntity.swift,
+				Modules/TaskList/Interactor/TaskListInteractor.swift,
+				Modules/TaskList/Presenter/TaskListPresenter.swift,
+				Modules/TaskList/Router/TaskListRouter.swift,
+				Modules/TaskList/View/TaskListView.swift,
+			);
+			target = C8A40BEF2D48EFD1004A7D51 /* ToDoListEffectiveMobileTests */;
+		};
+		C82FB56A2D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Modules/TaskList/Entity/TaskListEntity.swift,
+				Modules/TaskList/Interactor/TaskListInteractor.swift,
+				Modules/TaskList/Presenter/TaskListPresenter.swift,
+				Modules/TaskList/Router/TaskListRouter.swift,
+				Modules/TaskList/View/TaskListView.swift,
+			);
+			target = C8A40BF92D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C8A40BDD2D48EFD0004A7D51 /* ToDoListEffectiveMobile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C82FB5692D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileTests" target */,
+				C82FB56A2D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileUITests" target */,
+			);
 			path = ToDoListEffectiveMobile;
 			sourceTree = "<group>";
 		};
