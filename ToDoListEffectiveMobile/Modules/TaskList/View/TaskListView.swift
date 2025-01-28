@@ -12,7 +12,8 @@ struct TaskListView: View {
                 VStack {
                     HStack {
                         Image(systemName: "magnifyingglass") // Search icon
-                            .foregroundColor(.primary)
+                            .foregroundColor(Color(UIColor.placeholderText))
+    
                         
                         TextField("Search", text: $searchText)
                             .textFieldStyle(PlainTextFieldStyle()) // Plain style for custom background
@@ -27,11 +28,11 @@ struct TaskListView: View {
                             // Microphone button action here
                         }) {
                             Image(systemName: "mic.fill") // Microphone icon
-                                .foregroundColor(.primary)
+                                .foregroundColor(Color(UIColor.placeholderText))
                         }
                     }
                     .padding(.horizontal, 16)
-                    .background(.secondary) // Grey background
+                    .background(Color(.secondarySystemBackground)) // Grey background
                     .cornerRadius(12)
                     
                     List {
@@ -76,7 +77,7 @@ struct TaskListView: View {
                 ZStack{
                     HStack{
                         Spacer()
-                        Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(.white)
+                        Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
                         Spacer()
                     }
                     HStack{
