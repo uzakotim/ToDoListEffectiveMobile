@@ -26,8 +26,10 @@ class TaskListInteractor: TaskListInteractorProtocol {
                 }
 
                 do {
-                    let decodedResponse = try JSONDecoder().decode([Task].self, from: data)
-                    completion(.success(decodedResponse))
+                    print(String(data: data, encoding: .utf8) ?? "Invalid JSON")
+                    let decodedResponse = try JSONDecoder().decode(TodosResponse.self, from: data)
+                    completion(.success(decodedResponse.todos))
+                    print("Success")
                 } catch {
                     completion(.failure(error))
                 }
