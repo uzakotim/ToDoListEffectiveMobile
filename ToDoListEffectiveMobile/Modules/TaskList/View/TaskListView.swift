@@ -2,9 +2,9 @@ import SwiftUI
 
 struct TaskListView: View {
     @ObservedObject var presenter: TaskListPresenter
-
+    
     @State private var searchText: String = ""
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -65,34 +65,34 @@ struct TaskListView: View {
                     .onAppear {
                         presenter.loadTasks()
                     }
+                    
                 }
-                .padding(.horizontal, 16)
-
-                // Grey bottom bar
-                ZStack {
-                    Color.gray
-                        .frame(maxWidth: .infinity, maxHeight: 60) // Full width, fixed height for bottom bar
-                        .edgesIgnoringSafeArea(.bottom)// To cover the entire width and bottom
-
-                    HStack {
+                
+                
+            }
+        }
+        .toolbar{
+            ToolbarItem(placement: .bottomBar) {
+                ZStack{
+                    HStack{
                         Spacer()
-                        Text(" \(presenter.filteredTasks.count) задач")
-                            .foregroundColor(.white) // White text for contrast against grey
-                            .font(.caption)
+                        Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(.white)
                         Spacer()
                     }
-
-                    HStack {
+                    HStack{
                         Spacer()
-                        Button(action: { presenter.addNewTask() }) {
-                            Image(systemName: "square.and.pencil")
+                        Button(action: {
+                            // Microphone button action here
+                        }) {
+                            Image(systemName: "square.and.pencil") // Microphone icon
                                 .foregroundColor(.yellow)
                         }
                     }
                 }
-                .frame(maxWidth: .infinity) // Full width for bottom bar
-                .padding(.bottom, 0) // Ensures the bottom bar is pinned to the bottom edge
             }
         }
+        .toolbarBackground(Color.black, for: .bottomBar)
+        .padding()
+        .ignoresSafeArea()
     }
 }
