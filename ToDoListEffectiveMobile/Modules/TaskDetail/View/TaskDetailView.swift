@@ -19,13 +19,15 @@ struct TaskDetailView: View {
                 .font(.title)
                 .fontWeight(.bold)
 
-            Text(task.description)
-                .font(.body)
-                .foregroundColor(.gray)
-
-            Text("Дата: \(task.dateCreatedFormatted)")
+            Text("\(task.dateCreatedFormatted)")
                 .font(.caption)
                 .foregroundColor(.secondary)
+            
+            Text(task.description)
+                .font(.body)
+                .foregroundColor(.white)
+
+            
 
             Spacer()
         }

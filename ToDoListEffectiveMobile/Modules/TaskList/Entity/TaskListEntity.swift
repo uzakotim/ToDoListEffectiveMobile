@@ -25,7 +25,7 @@ struct Task: Identifiable, Codable{
         
         id = try container.decode(Int.self, forKey: .id)
         title = try container.decode(String.self, forKey: .todo) // The key is "todo" in the dummy JSON
-        description = "" // Default to an empty string
+        description = "Sample text" // Default to an empty string
         dateCreated = Date() // Use today's date if no date is provided
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
     }
