@@ -33,23 +33,41 @@ struct TaskListView: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .background(Color(.secondarySystemBackground)) // Grey background
+                    .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
                     List(presenter.filteredTasks) { task in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(task.title)
-                                .font(.headline)
-                            
-                            Text(task.description)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                            
-                            Text(task.dateCreatedFormatted)
-                                .font(.footnote)
-                                .foregroundColor(.gray)
+                        VStack(alignment: .leading) {
+                            HStack{
+                                if task.isCompleted {
+                                    Image(systemName: "checkmark.circle")
+                                        .foregroundColor(.yellow)
+                                } else {
+                                    Image(systemName: "circle")
+                                        .foregroundColor(.yellow)
+                                    
+                                }
+                                Text(task.title)
+                                    .font(.headline)
+                                    .strikethrough(task.isCompleted, color: Color(UIColor.placeholderText))
+                                    .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                            }
+                            HStack{
+                                Image(systemName: "checkmark.circle")
+                                    .opacity(0)
+                                VStack(alignment: .leading) {
+                                    Text(task.dateCreatedFormatted)
+                                        .font(.footnote)
+                                        .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                                    Text(task.description)
+                                        .font(.subheadline)
+                                        .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                                }
+                            }
                         }
+                        
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color(.systemBackground))
+                        .listRowBackground(Color(.systemBackground))
                         .cornerRadius(10)
                         .contextMenu {
                             Button(action: {
@@ -72,6 +90,7 @@ struct TaskListView: View {
                             }
                         }
                     }
+                    .background(Color(.systemBackground))
                     .navigationDestination(isPresented: $isNavigatingToTaskDetail){
                         presenter.router.navigateToTaskDetails(with: selectedTask)
                     }
