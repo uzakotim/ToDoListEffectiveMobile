@@ -67,12 +67,57 @@ struct BottomToolbar: View {
     }
 }
 
+
+struct TaskList: View {
+    let tasks: [Task]
+    let onEdit: (Task) -> Void
+    let onDelete: (Task) -> Void
+    let onShare: (Task) -> Void
+    @ObservedObject var presenter: TaskListPresenter
+    @Binding var isNavigatingToTaskDetail: Bool
+    @Binding var selectedTask: Task
+    
+    var body: some View {
+        List {
+            ForEach(tasks) { task in
+                ListItemView(task: task)
+                    .contextMenu {
+                        Button(action: { onEdit(task) }) {
+                            Label("Редактировать", systemImage: "square.and.pencil")
+                        }
+                        Button(action: { onShare(task) }) {
+                            Label("Поделиться", systemImage: "square.and.arrow.up")
+                        }
+                        Button(role: .destructive, action: { onDelete(task) }) {
+                            Label("Удалить", systemImage: "trash")
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                    .padding(0)
+            }
+            .onDelete { indexSet in
+                presenter.deleteTask(at: indexSet)
+            }
+        }
+        .listStyle(PlainListStyle())
+        .background(Color(.systemBackground))
+        .navigationDestination(isPresented: $isNavigatingToTaskDetail){
+            presenter.router.navigateToTaskDetails(with: selectedTask)
+        }
+        .listStyle(PlainListStyle())
+        .frame(maxWidth: .infinity)
+        .navigationTitle("Задачи")
+        .onAppear {
+            presenter.loadTasks()
+        }
+    }
+}
+
 struct TaskListView: View {
     @ObservedObject var presenter: TaskListPresenter
     @State private var isNavigatingToTaskDetail = false
     @State private var searchText: String = ""
     @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
-    let emptyTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
     
     var body: some View {
         NavigationStack {
@@ -80,49 +125,18 @@ struct TaskListView: View {
                 // Main content
                 VStack {
                     SearchBar(searchText: $searchText, presenter: presenter)
-                    List {
-                        ForEach(presenter.filteredTasks) { task in
-                            ListItemView(task: task)
-                                .background(Color(.systemBackground))
-                                .listRowBackground(Color(.systemBackground))
-                                .contextMenu {
-                                    Button(action: {
-                                        isNavigatingToTaskDetail = true
-                                        selectedTask = task
-                                    }) {
-                                        Label("Редактировать", systemImage: "square.and.pencil")
-                                    }
-                                    
-                                    Button(action: {
-                                        shareTask(task)
-                                    }) {
-                                        Label("Поделиться", systemImage: "square.and.arrow.up")
-                                    }
-                                    
-                                    Button(role: .destructive, action: {
-                                        presenter.deleteTask(task: task)
-                                    }) {
-                                        Label("Удалить", systemImage: "trash")
-                                    }
-                                }
-                            
-                                .listRowSeparator(.hidden)
-                                .padding(0)
-                            }
-                            .onDelete { indexSet in
-                                presenter.deleteTask(at: indexSet)
-                            }
-                        }
-                        .background(Color(.systemBackground))
-                        .navigationDestination(isPresented: $isNavigatingToTaskDetail){
-                            presenter.router.navigateToTaskDetails(with: selectedTask)
-                        }
-                        .listStyle(PlainListStyle())
-                        .frame(maxWidth: .infinity)
-                        .navigationTitle("Задачи")
-                        .onAppear {
-                            presenter.loadTasks()
-                        }
+                    TaskList(
+                        tasks: presenter.filteredTasks,
+                        onEdit: { task in
+                            selectedTask = task
+                            isNavigatingToTaskDetail = true
+                        },
+                        onDelete: presenter.deleteTask,
+                        onShare: shareTask,
+                        presenter: presenter,
+                        isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
+                        selectedTask: $selectedTask
+                    )
                 }
             }
         }

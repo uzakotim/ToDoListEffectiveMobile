@@ -19,6 +19,6 @@ class TaskDetailPresenter: ObservableObject {
     }
 
     func goBack() {
-        router.navigateBack()
+//        router.navigateBack()
     }
 }

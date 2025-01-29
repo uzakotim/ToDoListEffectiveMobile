@@ -29,12 +29,12 @@ class TaskListPresenter: ObservableObject {
         router.navigateToAddTask()
     }
     func openTaskDetails(for task: Task) {
-        router.navigateToTaskDetails(with: task)
+        _ = router.navigateToTaskDetails(with: task)
     }
 
     func deleteTask(at offsets: IndexSet) {
         offsets.forEach { index in
-            let task = tasks[index]
+//            let task = tasks[index]
             self.tasks.remove(at: index)
             self.filteredTasks = self.tasks
 //            interactor.deleteTask(task) {}
