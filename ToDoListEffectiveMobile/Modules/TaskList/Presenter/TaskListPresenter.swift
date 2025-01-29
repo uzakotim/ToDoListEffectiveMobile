@@ -35,13 +35,18 @@ class TaskListPresenter: ObservableObject {
     func deleteTask(at offsets: IndexSet) {
         offsets.forEach { index in
             let task = tasks[index]
-            interactor.deleteTask(task) { [weak self] in
-                self?.loadTasks()
-            }
+            self.tasks.remove(at: index)
+            self.filteredTasks = self.tasks
+//            interactor.deleteTask(task) {}
+//            { [weak self] in
+//                self?.loadTasks()
+//            }
         }
     }
     func deleteTask(task: Task) {
-        tasks.removeAll { $0.id == task.id }
+        self.tasks.removeAll() { $0.id == task.id }
+        self.filteredTasks = self.tasks
+//        interactor.deleteTask(task) {}
     }
     
     func searchTasks(query: String) {

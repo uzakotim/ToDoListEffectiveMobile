@@ -38,45 +38,49 @@ struct TaskListView: View {
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
                     .padding(.horizontal, 16)  // Adjust padding around the HStack to control overall width
-                    List(presenter.filteredTasks) { task in
-                        ListItemView(task: task)
-                        .background(Color(.systemBackground))
-                        .listRowBackground(Color(.systemBackground))
-                        
-                        .contextMenu {
-                            Button(action: {
-                                isNavigatingToTaskDetail = true
-                                selectedTask = task
-                            }) {
-                                Label("Редактировать", systemImage: "square.and.pencil")
+                    List {
+                        ForEach(presenter.filteredTasks) { task in
+                            ListItemView(task: task)
+                                .background(Color(.systemBackground))
+                                .listRowBackground(Color(.systemBackground))
+                                .contextMenu {
+                                    Button(action: {
+                                        isNavigatingToTaskDetail = true
+                                        selectedTask = task
+                                    }) {
+                                        Label("Редактировать", systemImage: "square.and.pencil")
+                                    }
+                                    
+                                    Button(action: {
+                                        shareTask(task)
+                                    }) {
+                                        Label("Поделиться", systemImage: "square.and.arrow.up")
+                                    }
+                                    
+                                    Button(role: .destructive, action: {
+                                        presenter.deleteTask(task: task)
+                                    }) {
+                                        Label("Удалить", systemImage: "trash")
+                                    }
+                                }
+                            
+                                .listRowSeparator(.hidden)
+                                .padding(0)
                             }
-
-                            Button(action: {
-                                shareTask(task)
-                            }) {
-                                Label("Поделиться", systemImage: "square.and.arrow.up")
-                            }
-
-                            Button(role: .destructive) {
-                                presenter.deleteTask(task: task)
-                            } label: {
-                                Label("Удалить", systemImage: "trash")
+                            .onDelete { indexSet in
+                                presenter.deleteTask(at: indexSet)
                             }
                         }
-                        .listRowSeparator(.hidden)
-                        .padding(0)
-                        
-                    }
-                    .background(Color(.systemBackground))
-                    .navigationDestination(isPresented: $isNavigatingToTaskDetail){
-                        presenter.router.navigateToTaskDetails(with: selectedTask)
-                    }
-                    .listStyle(PlainListStyle())
-                    .frame(maxWidth: .infinity)
-                    .navigationTitle("Задачи")
-                    .onAppear {
-                        presenter.loadTasks()
-                    }
+                        .background(Color(.systemBackground))
+                        .navigationDestination(isPresented: $isNavigatingToTaskDetail){
+                            presenter.router.navigateToTaskDetails(with: selectedTask)
+                        }
+                        .listStyle(PlainListStyle())
+                        .frame(maxWidth: .infinity)
+                        .navigationTitle("Задачи")
+                        .onAppear {
+                            presenter.loadTasks()
+                        }
                 }
             }
         }
