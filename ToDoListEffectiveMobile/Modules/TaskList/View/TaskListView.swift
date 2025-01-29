@@ -182,7 +182,8 @@ struct TaskListView: View {
                 }
                 
             }
-            .background(Color(UIColor.secondarySystemBackground))
+            .toolbarBackground(Color(UIColor.systemBackground), for: .tabBar)
+            .toolbarBackground(Color(UIColor.secondarySystemBackground), for: .automatic)
             .edgesIgnoringSafeArea(.bottom)
         }
         
