@@ -7,7 +7,7 @@ struct TodosResponse: Codable {
     let skip: Int
     let limit: Int
 }
-struct Task: Identifiable, Codable {
+struct Task: Identifiable, Codable{
     let id: Int
     let title: String
     let description: String
@@ -29,7 +29,16 @@ struct Task: Identifiable, Codable {
         dateCreated = Date() // Use today's date if no date is provided
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
     }
+    // Add manual initializer to view the Task in preview
+    init(id: Int, title: String, description: String = "", dateCreated: Date = Date(), isCompleted: Bool = false) {
+            self.id = id
+            self.title = title
+            self.description = description
+            self.dateCreated = dateCreated
+            self.isCompleted = isCompleted
+    }
 
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

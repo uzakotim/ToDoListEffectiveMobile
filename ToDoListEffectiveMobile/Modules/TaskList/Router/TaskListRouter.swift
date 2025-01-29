@@ -2,14 +2,23 @@ import SwiftUI
 
 protocol TaskListRouterProtocol {
     func navigateToAddTask()
+    func navigateToTaskDetails(with task: Task) -> TaskDetailView
+    func createMainScreen() -> TaskListView
 }
 
-class TaskListRouter: TaskListRouterProtocol {  // To hold a reference to the current view controller
+class TaskListRouter: TaskListRouterProtocol {
     func navigateToAddTask() {
-        // Implement the navigation logic to add a task screen
+    }
+    func navigateToTaskDetails(with task: Task) -> TaskDetailView {
+        let interactor = TaskDetailInteractor(task: task)
+        let router = TaskDetailRouter()
+        let presenter = TaskDetailPresenter(interactor: interactor, router: router)
+        let view = TaskDetailView(presenter: presenter, task: task)
+        
+        return view
     }
     
-    func createMainScreen() -> some View {
+    func createMainScreen() -> TaskListView {
         let interactor = TaskListInteractor()
         let presenter = TaskListPresenter(interactor: interactor, router: self)
         let view = TaskListView(presenter: presenter)

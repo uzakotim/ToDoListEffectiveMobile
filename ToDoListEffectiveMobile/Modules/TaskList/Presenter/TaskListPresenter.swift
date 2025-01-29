@@ -5,9 +5,9 @@ class TaskListPresenter: ObservableObject {
     @Published var filteredTasks: [Task] = []
 
     private let interactor: TaskListInteractorProtocol
-    private let router: TaskListRouterProtocol
+    public let router: TaskListRouterProtocol
 
-    init(interactor: TaskListInteractorProtocol, router: TaskListRouterProtocol) {
+    init(interactor: TaskListInteractor, router: TaskListRouter) {
         self.interactor = interactor
         self.router = router
     }
@@ -25,9 +25,11 @@ class TaskListPresenter: ObservableObject {
             }
         }
     }
-
     func addNewTask() {
         router.navigateToAddTask()
+    }
+    func openTaskDetails(for task: Task) {
+        router.navigateToTaskDetails(with: task)
     }
 
     func deleteTask(at offsets: IndexSet) {
@@ -38,7 +40,10 @@ class TaskListPresenter: ObservableObject {
             }
         }
     }
-
+    func deleteTask(task: Task) {
+        tasks.removeAll { $0.id == task.id }
+    }
+    
     func searchTasks(query: String) {
         if query.isEmpty {
             filteredTasks = tasks

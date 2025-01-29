@@ -2,11 +2,12 @@ import SwiftUI
 
 struct TaskListView: View {
     @ObservedObject var presenter: TaskListPresenter
-    
+    @State private var isNavigatingToTaskDetail = false
     @State private var searchText: String = ""
+    @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 // Main content
                 VStack {
@@ -34,39 +35,50 @@ struct TaskListView: View {
                     .padding(.horizontal, 16)
                     .background(Color(.secondarySystemBackground)) // Grey background
                     .cornerRadius(12)
-                    
-                    List {
-                        ForEach(presenter.filteredTasks) { task in
-                            HStack {
-                                Image(systemName: task.isCompleted ? "checkmark.circle" : "circlebadge")
-                                    .foregroundColor(.yellow)
-                                VStack(alignment: .leading) {
-                                    Text(task.title)
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Text(task.description)
-                                        .font(.caption)
-                                        .foregroundColor(.white)
-                                    Text("\(task.dateCreatedFormatted)")
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                }
-                                Spacer()
-                                // if not last element, show divider
-                                if task.id != presenter.filteredTasks.last?.id {
-                                    Divider()
-                                }
+                    List(presenter.filteredTasks) { task in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(task.title)
+                                .font(.headline)
+                            
+                            Text(task.description)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            
+                            Text(task.dateCreatedFormatted)
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(10)
+                        .contextMenu {
+                            Button(action: {
+                                isNavigatingToTaskDetail = true
+                                selectedTask = task
+                            }) {
+                                Label("Редактировать", systemImage: "square.and.pencil")
+                            }
+
+                            Button(action: {
+                                shareTask(task)
+                            }) {
+                                Label("Поделиться", systemImage: "square.and.arrow.up")
+                            }
+
+                            Button(role: .destructive) {
+                                presenter.deleteTask(task: task)
+                            } label: {
+                                Label("Удалить", systemImage: "trash")
                             }
                         }
-                        .onDelete { indexSet in
-                            presenter.deleteTask(at: indexSet)
-                        }
+                    }
+                    .navigationDestination(isPresented: $isNavigatingToTaskDetail){
+                        presenter.router.navigateToTaskDetails(with: selectedTask)
                     }
                     .navigationTitle("Задачи")
                     .onAppear {
                         presenter.loadTasks()
                     }
-                    
                 }
                 
                 
@@ -95,5 +107,12 @@ struct TaskListView: View {
         .toolbarBackground(Color.black, for: .bottomBar)
         .padding()
         .ignoresSafeArea()
+    }
+    func shareTask(_ task: Task) {
+        let activityVC = UIActivityViewController(activityItems: [task.title, task.description], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            rootVC.present(activityVC, animated: true, completion: nil)
+        }
     }
 }
