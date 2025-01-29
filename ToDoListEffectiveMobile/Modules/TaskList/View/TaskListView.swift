@@ -33,6 +33,40 @@ struct SearchBar: View {
     }
 }
 
+extension UUID {
+    var intID: Int {
+        return abs(self.uuidString.hash)
+    }
+}
+
+struct BottomToolbar: View {
+    @ObservedObject var presenter: TaskListPresenter
+    @Binding var isNavigatingToTaskDetail: Bool
+    @Binding var selectedTask: Task
+    
+    // create int from UUID
+    let emptyTask: Task = .init(id: UUID().intID, title: "", description: "", isCompleted: false)
+    var body: some View {
+        ZStack{
+            HStack{
+                Spacer()
+                Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
+                Spacer()
+            }
+            HStack{
+                Spacer()
+                Button(action: {
+                    isNavigatingToTaskDetail = true
+                    selectedTask = emptyTask
+                }) {
+                    Image(systemName: "square.and.pencil")
+                        .foregroundColor(.yellow)
+                }
+            }
+        }
+    }
+}
+
 struct TaskListView: View {
     @ObservedObject var presenter: TaskListPresenter
     @State private var isNavigatingToTaskDetail = false
@@ -94,23 +128,7 @@ struct TaskListView: View {
         }
         .toolbar{
             ToolbarItem(placement: .bottomBar) {
-                ZStack{
-                    HStack{
-                        Spacer()
-                        Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
-                        Spacer()
-                    }
-                    HStack{
-                        Spacer()
-                        Button(action: {
-                            isNavigatingToTaskDetail = true
-                            selectedTask = emptyTask
-                        }) {
-                            Image(systemName: "square.and.pencil")
-                                .foregroundColor(.yellow)
-                        }
-                    }
-                }
+                BottomToolbar(presenter: presenter, isNavigatingToTaskDetail: $isNavigatingToTaskDetail, selectedTask: $selectedTask)
             }
         }
         .toolbarBackground(Color.black, for: .bottomBar)
