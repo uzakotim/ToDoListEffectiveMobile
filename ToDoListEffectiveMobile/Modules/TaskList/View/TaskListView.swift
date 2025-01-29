@@ -13,29 +13,31 @@ struct TaskListView: View {
                 // Main content
                 VStack {
                     HStack {
+                        Spacer()
                         Image(systemName: "magnifyingglass") // Search icon
                             .foregroundColor(Color(UIColor.placeholderText))
-    
-                        
+
                         TextField("Search", text: $searchText)
                             .textFieldStyle(PlainTextFieldStyle()) // Plain style for custom background
                             .cornerRadius(6)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 10)
+                            .padding(.vertical, 8)  // Adjust vertical padding
+                            .padding(.horizontal, 6)  // Adjust horizontal padding
+                            .frame(maxWidth: .infinity)  // Set a fixed width for the TextField
                             .onChange(of: searchText) { oldValue, newValue in
                                 presenter.searchTasks(query: newValue)
                             }
-                        
+
                         Button(action: {
                             // Microphone button action here
                         }) {
                             Image(systemName: "mic.fill") // Microphone icon
                                 .foregroundColor(Color(UIColor.placeholderText))
                         }
+                        Spacer()
                     }
-                    .padding(.horizontal, 12)
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
+                    .padding(.horizontal, 16)  // Adjust padding around the HStack to control overall width
                     List(presenter.filteredTasks) { task in
                         ListItemView(task: task)
                         .background(Color(.systemBackground))
