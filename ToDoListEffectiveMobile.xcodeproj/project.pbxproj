@@ -37,6 +37,7 @@
 				Modules/TaskList/Interactor/TaskListInteractor.swift,
 				Modules/TaskList/Presenter/TaskListPresenter.swift,
 				Modules/TaskList/Router/TaskListRouter.swift,
+				Modules/TaskList/View/ListItemView.swift,
 				Modules/TaskList/View/TaskListView.swift,
 			);
 			target = C8A40BEF2D48EFD1004A7D51 /* ToDoListEffectiveMobileTests */;
@@ -48,6 +49,7 @@
 				Modules/TaskList/Interactor/TaskListInteractor.swift,
 				Modules/TaskList/Presenter/TaskListPresenter.swift,
 				Modules/TaskList/Router/TaskListRouter.swift,
+				Modules/TaskList/View/ListItemView.swift,
 				Modules/TaskList/View/TaskListView.swift,
 			);
 			target = C8A40BF92D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests */;

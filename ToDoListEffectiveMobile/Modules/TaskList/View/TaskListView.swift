@@ -6,6 +6,7 @@ struct TaskListView: View {
     @State private var searchText: String = ""
     @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
     let emptyTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -32,43 +33,14 @@ struct TaskListView: View {
                                 .foregroundColor(Color(UIColor.placeholderText))
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
                     List(presenter.filteredTasks) { task in
-                        VStack(alignment: .leading) {
-                            HStack{
-                                if task.isCompleted {
-                                    Image(systemName: "checkmark.circle")
-                                        .foregroundColor(.yellow)
-                                } else {
-                                    Image(systemName: "circle")
-                                        .foregroundColor(.yellow)
-                                    
-                                }
-                                Text(task.title)
-                                    .font(.headline)
-                                    .strikethrough(task.isCompleted, color: Color(UIColor.placeholderText))
-                                    .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
-                            }
-                            HStack{
-                                Image(systemName: "checkmark.circle")
-                                    .opacity(0)
-                                VStack(alignment: .leading) {
-                                    Text(task.dateCreatedFormatted)
-                                        .font(.footnote)
-                                        .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
-                                    Text(task.description)
-                                        .font(.subheadline)
-                                        .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
-                                }
-                            }
-                        }
-                        
-                        .padding()
+                        ListItemView(task: task)
                         .background(Color(.systemBackground))
                         .listRowBackground(Color(.systemBackground))
-                        .cornerRadius(10)
+                        
                         .contextMenu {
                             Button(action: {
                                 isNavigatingToTaskDetail = true
@@ -89,18 +61,21 @@ struct TaskListView: View {
                                 Label("Удалить", systemImage: "trash")
                             }
                         }
+                        .listRowSeparator(.hidden)
+                        .padding(0)
+                        
                     }
                     .background(Color(.systemBackground))
                     .navigationDestination(isPresented: $isNavigatingToTaskDetail){
                         presenter.router.navigateToTaskDetails(with: selectedTask)
                     }
+                    .listStyle(PlainListStyle())
+                    .frame(maxWidth: .infinity)
                     .navigationTitle("Задачи")
                     .onAppear {
                         presenter.loadTasks()
                     }
                 }
-                
-                
             }
         }
         .toolbar{
@@ -125,7 +100,6 @@ struct TaskListView: View {
             }
         }
         .toolbarBackground(Color.black, for: .bottomBar)
-        .padding()
         .ignoresSafeArea()
     }
     func shareTask(_ task: Task) {

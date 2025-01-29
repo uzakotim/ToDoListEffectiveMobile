@@ -16,7 +16,7 @@ struct Task: Identifiable, Codable{
 
     var dateCreatedFormatted: String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateFormat = "dd/MM/yy"
         return formatter.string(from: dateCreated)
     }
 
