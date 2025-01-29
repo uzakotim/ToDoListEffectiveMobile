@@ -25,7 +25,7 @@ struct TaskDetailView: View {
             
             Text(task.description)
                 .font(.body)
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
 
             
 
