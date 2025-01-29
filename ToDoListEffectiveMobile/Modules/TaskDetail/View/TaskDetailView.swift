@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftUI
 
 struct TaskDetailView: View {
-
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var presenter: TaskDetailPresenter
     var task: Task
     var body: some View {
@@ -30,8 +30,17 @@ struct TaskDetailView: View {
             Spacer()
         }
         .padding()
-        .navigationTitle("Задача") // ✅ Adds title
-        .navigationBarTitleDisplayMode(.inline) // ✅ Keeps it compact
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+                   dismiss() // Dismiss the view when back button is pressed
+               }) {
+                   HStack{
+                       Image(systemName: "chevron.left")
+                       Text(" Назад")
+                   }
+                   .foregroundColor(.yellow)
+               })
     }
 }
 

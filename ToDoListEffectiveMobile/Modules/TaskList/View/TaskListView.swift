@@ -5,7 +5,7 @@ struct TaskListView: View {
     @State private var isNavigatingToTaskDetail = false
     @State private var searchText: String = ""
     @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
-    
+    let emptyTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
     var body: some View {
         NavigationStack {
             VStack {
@@ -95,9 +95,10 @@ struct TaskListView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            // Microphone button action here
+                            isNavigatingToTaskDetail = true
+                            selectedTask = emptyTask
                         }) {
-                            Image(systemName: "square.and.pencil") // Microphone icon
+                            Image(systemName: "square.and.pencil")
                                 .foregroundColor(.yellow)
                         }
                     }
