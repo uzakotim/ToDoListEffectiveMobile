@@ -1,5 +1,33 @@
 import SwiftUI
+struct CustomContextMenuPreviewView: View {
+    let task: Task
 
+    var body: some View {
+        HStack{
+            VStack(alignment: .leading, spacing: 8) {
+                Text(task.title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .lineLimit(nil) // Allows unlimited lines
+                    .fixedSize(horizontal: false, vertical: true) // Prevents text from getting cut off
+                
+                Text(task.description)
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                Text(task.dateCreatedFormatted)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
+        }
+        .padding(25)
+        .cornerRadius(12)
+        .frame(minWidth: 200, maxWidth: 400)
+    }
+}
 struct SearchBar: View {
     @Binding var searchText: String
     @ObservedObject var presenter: TaskListPresenter
@@ -91,7 +119,7 @@ struct TaskList: View {
                         Button(role: .destructive, action: { onDelete(task) }) {
                             Label("Удалить", systemImage: "trash")
                         }
-                    }
+                    } preview: { CustomContextMenuPreviewView(task: task) }
                     .listRowSeparator(.hidden)
                     .padding(0)
             }
