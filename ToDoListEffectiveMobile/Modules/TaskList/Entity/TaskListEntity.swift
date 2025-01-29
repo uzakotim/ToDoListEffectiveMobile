@@ -9,9 +9,9 @@ struct TodosResponse: Codable {
 }
 struct Task: Identifiable, Codable{
     let id: Int
-    let title: String
-    let description: String
-    let dateCreated: Date
+    var title: String
+    var description: String
+    var dateCreated: Date
     var isCompleted: Bool
 
     var dateCreatedFormatted: String {

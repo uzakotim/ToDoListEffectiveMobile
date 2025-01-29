@@ -15,18 +15,16 @@ struct TaskDetailView: View {
     var task: Task
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(task.title)
+            TextField("Введите название", text:$presenter.task.title)
                 .font(.title)
                 .fontWeight(.bold)
-
             Text("\(task.dateCreatedFormatted)")
                 .font(.caption)
                 .foregroundColor(.secondary)
             
-            Text(task.description)
+            TextField("Введите описание", text:$presenter.task.description, axis: .vertical)
                 .font(.body)
                 .foregroundColor(.primary)
-
             
 
             Spacer()

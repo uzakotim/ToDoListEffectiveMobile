@@ -11,13 +11,12 @@ class TaskDetailPresenter: ObservableObject {
     @Published var task: Task
     private let interactor: TaskDetailInteractorProtocol
     private let router: TaskDetailRouterProtocol
-
+    
     init(interactor: TaskDetailInteractor, router: TaskDetailRouter) {
         self.interactor = interactor
         self.task = interactor.task
         self.router = router
     }
-
     func goBack() {
 //        router.navigateBack()
     }
