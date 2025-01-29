@@ -105,7 +105,7 @@ struct TaskList: View {
     @ObservedObject var presenter: TaskListPresenter
     @Binding var isNavigatingToTaskDetail: Bool
     @Binding var selectedTask: Task
-    
+   
     var body: some View {
         List {
             ForEach(tasks) { task in
@@ -154,7 +154,7 @@ struct TaskListView: View {
     @State private var isNavigatingToTaskDetail = false
     @State private var searchText: String = ""
     @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -178,12 +178,13 @@ struct TaskListView: View {
                 ToolbarItem(placement: .bottomBar) {
                     BottomToolbar(presenter: presenter, isNavigatingToTaskDetail: $isNavigatingToTaskDetail, selectedTask: $selectedTask
                     )
+                    
                 }
+                
             }
-            .toolbarBackground(Color.black, for: .bottomBar)
+            .background(Color(UIColor.secondarySystemBackground))
             .edgesIgnoringSafeArea(.bottom)
         }
-
         
     }
     func shareTask(_ task: Task) {
