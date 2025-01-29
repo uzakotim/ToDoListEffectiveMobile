@@ -32,6 +32,13 @@ class TaskListPresenter: ObservableObject {
         _ = router.navigateToTaskDetails(with: task)
     }
 
+    func toggleTask(task: Task){
+        // find task in tasks
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index].isCompleted.toggle()
+        }
+        self.filteredTasks = self.tasks
+    }
     func deleteTask(at offsets: IndexSet) {
         offsets.forEach { index in
 //            let task = tasks[index]
@@ -43,6 +50,7 @@ class TaskListPresenter: ObservableObject {
 //            }
         }
     }
+    
     func deleteTask(task: Task) {
         self.tasks.removeAll() { $0.id == task.id }
         self.filteredTasks = self.tasks

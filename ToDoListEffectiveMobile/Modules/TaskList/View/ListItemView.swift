@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ListItemView: View {
-    let task: Task
+    var task: Task
     var body: some View {
         VStack(alignment: .leading){
             VStack(alignment: .leading) {

@@ -81,6 +81,7 @@ struct BottomToolbar: View {
                 Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
                 Spacer()
             }
+           
             HStack{
                 Spacer()
                 Button(action: {
@@ -109,6 +110,7 @@ struct TaskList: View {
         List {
             ForEach(tasks) { task in
                 ListItemView(task: task)
+                    .contentShape(Rectangle())
                     .contextMenu {
                         Button(action: { onEdit(task) }) {
                             Label("Редактировать", systemImage: "square.and.pencil")
@@ -122,10 +124,16 @@ struct TaskList: View {
                     } preview: { CustomContextMenuPreviewView(task: task) }
                     .listRowSeparator(.hidden)
                     .padding(0)
+                    .onTapGesture {
+                        presenter.toggleTask(task: task)
+                    }
+                    
             }
+            
             .onDelete { indexSet in
                 presenter.deleteTask(at: indexSet)
             }
+            
         }
         .listStyle(PlainListStyle())
         .background(Color(.systemBackground))
@@ -150,31 +158,33 @@ struct TaskListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // Main content
-                VStack {
-                    SearchBar(searchText: $searchText, presenter: presenter)
-                    TaskList(
-                        tasks: presenter.filteredTasks,
-                        onEdit: { task in
-                            selectedTask = task
-                            isNavigatingToTaskDetail = true
-                        },
-                        onDelete: presenter.deleteTask,
-                        onShare: shareTask,
-                        presenter: presenter,
-                        isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
-                        selectedTask: $selectedTask
+                        // Main content
+                        SearchBar(searchText: $searchText, presenter: presenter)
+                        TaskList(
+                            tasks: presenter.filteredTasks,
+                            onEdit: { task in
+                                selectedTask = task
+                                isNavigatingToTaskDetail = true
+                            },
+                            onDelete: presenter.deleteTask,
+                            onShare: shareTask,
+                            presenter: presenter,
+                            isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
+                            selectedTask: $selectedTask
+                        )
+                
+            }
+            .toolbar{
+                ToolbarItem(placement: .bottomBar) {
+                    BottomToolbar(presenter: presenter, isNavigatingToTaskDetail: $isNavigatingToTaskDetail, selectedTask: $selectedTask
                     )
                 }
             }
+            .toolbarBackground(Color.black, for: .bottomBar)
+            .edgesIgnoringSafeArea(.bottom)
         }
-        .toolbar{
-            ToolbarItem(placement: .bottomBar) {
-                BottomToolbar(presenter: presenter, isNavigatingToTaskDetail: $isNavigatingToTaskDetail, selectedTask: $selectedTask)
-            }
-        }
-        .toolbarBackground(Color.black, for: .bottomBar)
-        .ignoresSafeArea()
+
+        
     }
     func shareTask(_ task: Task) {
         let activityVC = UIActivityViewController(activityItems: [task.title, task.description], applicationActivities: nil)
