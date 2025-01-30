@@ -18,15 +18,13 @@ struct TaskDetailView: View {
             TextField("Введите название", text:$presenter.task.title,  axis: .vertical)
                 .font(.title)
                 .fontWeight(.bold)
+                .contentShape(Rectangle())
             Text("\(task.dateCreatedFormatted)")
                 .font(.caption)
                 .foregroundColor(.secondary)
-            
             TextField("Введите описание", text:$presenter.task.descriptionData, axis: .vertical)
                 .font(.body)
                 .foregroundColor(.primary)
-            
-
             Spacer()
         }
         .padding()

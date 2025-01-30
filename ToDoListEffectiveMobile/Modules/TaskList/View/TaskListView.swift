@@ -87,7 +87,8 @@ struct BottomToolbar: View {
         ZStack{
             HStack{
                 Spacer()
-                Text("\(presenter.filteredTasks.count) задач").font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
+                Text("\(presenter.filteredTasks.count) \(pluralizeTask(count: presenter.filteredTasks.count))")
+                    .font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
                 Spacer()
             }
            
@@ -103,6 +104,18 @@ struct BottomToolbar: View {
             }
         }
     }
+    private func pluralizeTask(count: Int) -> String {
+            let mod10 = count % 10
+            let mod100 = count % 100
+
+            if mod10 == 1 && mod100 != 11 {
+                return "задача"
+            } else if mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20) {
+                return "задачи"
+            } else {
+                return "задач"
+            }
+        }
 }
 
 
