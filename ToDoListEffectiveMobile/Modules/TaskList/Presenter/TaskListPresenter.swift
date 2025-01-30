@@ -96,6 +96,24 @@ class TaskListPresenter: ObservableObject {
     }
 
     func toggleTask(task: Task){
+        let context = PersistenceController.shared.container.viewContext
+        
+        // Create a fetch request to find the task by its ID
+        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)  // Assuming 'id' is unique
+        
+        do {
+            let taskEntities = try context.fetch(fetchRequest)
+            
+            // Assuming the task exists, delete it
+            if let taskEntity = taskEntities.first {
+                taskEntity.isCompleted.toggle()
+                try context.save()  // Save the context to persist the deletion
+                print("Task completion toggled successfully in Core Data")
+            }
+        } catch {
+            print("Failed to delete task: \(error.localizedDescription)")
+        }
         // find task in tasks
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle()
