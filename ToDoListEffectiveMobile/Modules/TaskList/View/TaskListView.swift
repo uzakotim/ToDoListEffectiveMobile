@@ -131,7 +131,10 @@ struct TaskList: View {
             }
             
             .onDelete { indexSet in
-                presenter.deleteTask(at: indexSet)
+                for index in indexSet {
+                    let taskToDelete = presenter.tasks[index] // Get the task at the index
+                    presenter.deleteTask(task: taskToDelete) // Delete the task from Core Data
+                }
             }
             
         }

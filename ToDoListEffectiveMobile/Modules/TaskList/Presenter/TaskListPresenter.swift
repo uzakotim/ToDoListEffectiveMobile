@@ -102,17 +102,27 @@ class TaskListPresenter: ObservableObject {
         }
         self.filteredTasks = self.tasks
     }
-    func deleteTask(at offsets: IndexSet) {
-        offsets.forEach { index in
-            self.tasks.remove(at: index)
-            self.filteredTasks = self.tasks
-        }
-    }
-    
     func deleteTask(task: Task) {
+        let context = PersistenceController.shared.container.viewContext
+        
+        // Create a fetch request to find the task by its ID
+        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)  // Assuming 'id' is unique
+        
+        do {
+            let taskEntities = try context.fetch(fetchRequest)
+            
+            // Assuming the task exists, delete it
+            if let taskEntity = taskEntities.first {
+                context.delete(taskEntity)  // Delete the fetched object
+                try context.save()  // Save the context to persist the deletion
+                print("Task deleted successfully")
+            }
+        } catch {
+            print("Failed to delete task: \(error.localizedDescription)")
+        }
         self.tasks.removeAll() { $0.id == task.id }
         self.filteredTasks = self.tasks
-        //        interactor.deleteTask(task) {}
     }
     
     func searchTasks(query: String) {
