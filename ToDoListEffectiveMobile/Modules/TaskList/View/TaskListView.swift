@@ -11,14 +11,14 @@ struct CustomContextMenuPreviewView: View {
                 Text(task.title)
                     .font(.headline)
                     .foregroundColor(.primary)
-                    .lineLimit(nil) // Allows unlimited lines
-                    .fixedSize(horizontal: false, vertical: true) // Prevents text from getting cut off
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: false)
                 
                 Text(task.descriptionData)
                     .font(.subheadline)
                     .foregroundColor(.primary)
                     .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .fixedSize(horizontal: false, vertical: false)
                 
                 Text(task.dateCreatedFormatted)
                     .font(.caption)
