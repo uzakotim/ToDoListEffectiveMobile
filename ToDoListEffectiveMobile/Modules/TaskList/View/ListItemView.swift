@@ -26,10 +26,10 @@ struct ListItemView: View {
                             .imageScale(.large)
                             .opacity(0)
                         VStack(alignment: .leading) {
-                            
                             Text(task.descriptionData)
                                 .font(.subheadline)
                                 .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                            Spacer()
                             Text(task.dateCreatedFormatted)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.placeholderText))
