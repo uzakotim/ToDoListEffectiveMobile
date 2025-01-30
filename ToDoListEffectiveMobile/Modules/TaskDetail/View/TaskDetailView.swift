@@ -39,9 +39,9 @@ struct TaskDetailView: View {
             }
             dismiss() // Dismiss the view when back button is pressed
            }) {
-               HStack{
+               HStack( spacing: 0.0){
                    Image(systemName: "chevron.left")
-                   Text(" Назад")
+                   Text("Назад")
                }
                .foregroundColor(.yellow)
            })
