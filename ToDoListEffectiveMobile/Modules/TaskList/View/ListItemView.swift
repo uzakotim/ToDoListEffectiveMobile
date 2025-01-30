@@ -11,6 +11,7 @@ struct ListItemView: View {
     var body: some View {
         Section{
             VStack(alignment: .leading){
+                
                 VStack(alignment: .leading) {
                     HStack{
                         Image(systemName: task.isCompleted ? "checkmark.circle" : "circle")
@@ -29,15 +30,15 @@ struct ListItemView: View {
                             Text(task.descriptionData)
                                 .font(.subheadline)
                                 .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
-                            Spacer()
                             Text(task.dateCreatedFormatted)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.placeholderText))
-                        }
+                        }.padding(0)
                     }
-                    Spacer()
+                    .padding(0)
                 }
                 .padding(0)
+                Spacer()
                 Divider()
                     .frame(height: 1)
                     .background(Color(UIColor.placeholderText))
