@@ -15,7 +15,7 @@ struct TaskDetailView: View {
     var task: Task
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            TextField("Введите название", text:$presenter.task.title)
+            TextField("Введите название", text:$presenter.task.title,  axis: .vertical)
                 .font(.title)
                 .fontWeight(.bold)
             Text("\(task.dateCreatedFormatted)")
