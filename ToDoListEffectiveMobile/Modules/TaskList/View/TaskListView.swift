@@ -1,4 +1,5 @@
 import SwiftUI
+import Speech
 struct CustomContextMenuPreviewView: View {
     let task: Task
 
@@ -31,6 +32,10 @@ struct CustomContextMenuPreviewView: View {
 struct SearchBar: View {
     @Binding var searchText: String
     @ObservedObject var presenter: TaskListPresenter
+    // To handle speech recognition
+    @State private var isDictating = false
+    private let speechRecognizer = SFSpeechRecognizer()
+    
     var body: some View {
         HStack {
             Spacer()
@@ -46,9 +51,10 @@ struct SearchBar: View {
                 .onChange(of: searchText) { oldValue, newValue in
                     presenter.searchTasks(query: newValue)
                 }
+                .disableAutocorrection(true)  // Disable autocorrect for dictation
 
             Button(action: {
-                // Microphone button action here
+                startDictation()
             }) {
                 Image(systemName: "mic.fill") // Microphone icon
                     .foregroundColor(Color(UIColor.placeholderText))
@@ -59,6 +65,30 @@ struct SearchBar: View {
         .cornerRadius(12)
         .padding(.horizontal, 16)
     }
+
+    
+    private func startDictation() {
+            if SFSpeechRecognizer.authorizationStatus() == .authorized {
+                isDictating = true
+                _ = AVAudioEngine()
+                let request = SFSpeechAudioBufferRecognitionRequest()
+                _ = speechRecognizer?.recognitionTask(with: request) { result, error in
+                    if let result = result {
+                        // Use the text result for dictation
+                        self.searchText = result.bestTranscription.formattedString
+                    }
+                    if let error = error {
+                        print("Dictation error: \(error.localizedDescription)")
+                        self.isDictating = false
+                    }
+                }
+                // Set up and start the audio engine to capture voice input.
+                // You can add audio engine setup code here (requires AVFoundation setup)
+            } else {
+                // Handle error when speech recognition is not authorized
+                print("Speech recognition not authorized")
+            }
+        }
 }
 
 extension UUID {
@@ -148,6 +178,34 @@ struct TaskList: View {
         .navigationTitle("Задачи")
         .onAppear {
             presenter.loadData()
+            requestPermissions()
+        }
+    }
+    // The requestPermissions function
+    func requestPermissions() {
+        // Request microphone permission
+        AVAudioSession.sharedInstance().requestRecordPermission { (isGranted) in
+            if isGranted {
+                print("Microphone permission granted")
+            } else {
+                print("Microphone permission denied")
+            }
+        }
+        
+        // Request speech recognition permission
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            switch authStatus {
+            case .authorized:
+                print("Speech recognition authorized")
+            case .denied:
+                print("Speech recognition denied")
+            case .restricted:
+                print("Speech recognition restricted")
+            case .notDetermined:
+                print("Speech recognition not determined")
+            @unknown default:
+                break
+            }
         }
     }
 }

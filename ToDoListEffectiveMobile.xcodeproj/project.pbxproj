@@ -61,12 +61,20 @@
 			);
 			target = C8A40BF92D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests */;
 		};
+		C85165832D4BABD1009AD4D8 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobile" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C8A40BDA2D48EFD0004A7D51 /* ToDoListEffectiveMobile */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C8A40BDD2D48EFD0004A7D51 /* ToDoListEffectiveMobile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				C85165832D4BABD1009AD4D8 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobile" target */,
 				C82FB5692D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileTests" target */,
 				C82FB56A2D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileUITests" target */,
 			);
@@ -441,6 +449,9 @@
 				DEVELOPMENT_TEAM = 2FB82FC46N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ToDoListEffectiveMobile/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Пожалуйста, разрешите использование микрофона для диктовки речи\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Пожалуйста, разрешите использовать распознавание речи\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -470,6 +481,9 @@
 				DEVELOPMENT_TEAM = 2FB82FC46N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ToDoListEffectiveMobile/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "\"Пожалуйста, разрешите использование микрофона для диктовки речи\"";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "\"Пожалуйста, разрешите использовать распознавание речи\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

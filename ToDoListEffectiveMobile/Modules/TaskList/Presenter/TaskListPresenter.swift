@@ -37,9 +37,11 @@ class TaskListPresenter: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tasks):
-                    self?.tasks = tasks
-                    self?.filteredTasks = tasks
-                    self?.saveTasks(tasks: tasks)
+                    // sort tasks by id
+                    let sortedTasks = tasks.sorted { $0.id > $1.id }
+                    self?.tasks = sortedTasks
+                    self?.filteredTasks = sortedTasks
+                    self?.saveTasks(tasks: sortedTasks)
                 case .failure(let error):
                     print("Ошибка загрузки: \(error)")
                 }
@@ -80,7 +82,7 @@ class TaskListPresenter: ObservableObject {
                 )
                 result.append(task)  // Append each task to the result array
             }
-            self.tasks = result.reversed()  // Assign the full result array to tasks
+            self.tasks = result.sorted { $0.id > $1.id }  // Assign the full result array to tasks
             self.filteredTasks = self.tasks  // Update filtered tasks as well
         } catch {
             print("Ошибка загрузки из CoreData: \(error)")
