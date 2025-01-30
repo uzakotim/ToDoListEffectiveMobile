@@ -33,14 +33,15 @@ struct TaskDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
-                   dismiss() // Dismiss the view when back button is pressed
-               }) {
-                   HStack{
-                       Image(systemName: "chevron.left")
-                       Text(" Назад")
-                   }
-                   .foregroundColor(.yellow)
-               })
+            presenter.updateTask(task: task, title: presenter.task.title, descriptionData: presenter.task.descriptionData)
+            dismiss() // Dismiss the view when back button is pressed
+           }) {
+               HStack{
+                   Image(systemName: "chevron.left")
+                   Text(" Назад")
+               }
+               .foregroundColor(.yellow)
+           })
     }
 }
 
