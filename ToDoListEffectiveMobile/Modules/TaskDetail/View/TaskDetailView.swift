@@ -33,7 +33,7 @@ struct TaskDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action: {
-            if (task.id == -1){
+            if (task.id == -1) && (presenter.task.title != ""){
                 presenter.addNewTask(title: presenter.task.title, descriptionData: presenter.task.descriptionData)
             }
             else{
