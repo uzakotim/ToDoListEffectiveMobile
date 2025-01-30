@@ -26,7 +26,11 @@ class TaskDetailPresenter: ObservableObject {
     }
     func updateTask(task: Task, title: String , descriptionData: String){
         let context = PersistenceController.shared.container.viewContext
-        let newTask = Task(id: task.id, title: title, description: descriptionData, dateCreated: Date(), isCompleted: task.isCompleted)
+        var previousDate = task.dateCreated
+        if (task.title != title) || (task.descriptionData != descriptionData) {
+            previousDate = Date()
+        }
+        let newTask = Task(id: task.id, title: title, description: descriptionData, dateCreated: previousDate, isCompleted: task.isCompleted)
         // Create a fetch request to find the task by its ID
         let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)
