@@ -73,7 +73,7 @@ struct BottomToolbar: View {
     @Binding var selectedTask: Task
     
     // create int from UUID
-    let emptyTask: Task = .init(id: UUID().intID, title: "", description: "", isCompleted: false)
+    let emptyTask: Task = .init(id: -1, title: "", description: "", isCompleted: false)
     var body: some View {
         ZStack{
             HStack{

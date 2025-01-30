@@ -80,7 +80,7 @@ class TaskListPresenter: ObservableObject {
                 )
                 result.append(task)  // Append each task to the result array
             }
-            self.tasks = result  // Assign the full result array to tasks
+            self.tasks = result.reversed()  // Assign the full result array to tasks
             self.filteredTasks = self.tasks  // Update filtered tasks as well
         } catch {
             print("Ошибка загрузки из CoreData: \(error)")
