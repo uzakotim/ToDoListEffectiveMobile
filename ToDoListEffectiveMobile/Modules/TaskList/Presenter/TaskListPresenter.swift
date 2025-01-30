@@ -82,7 +82,7 @@ class TaskListPresenter: ObservableObject {
                 )
                 result.append(task)  // Append each task to the result array
             }
-            self.tasks = result.sorted { $0.id > $1.id }  // Assign the full result array to tasks
+            self.tasks = result.sorted { $0.dateCreated > $1.dateCreated }  
             self.filteredTasks = self.tasks  // Update filtered tasks as well
         } catch {
             print("Ошибка загрузки из CoreData: \(error)")
