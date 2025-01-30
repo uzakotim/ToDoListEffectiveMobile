@@ -11,7 +11,7 @@ struct CustomContextMenuPreviewView: View {
                     .lineLimit(nil) // Allows unlimited lines
                     .fixedSize(horizontal: false, vertical: true) // Prevents text from getting cut off
                 
-                Text(task.description)
+                Text(task.descriptionData)
                     .font(.subheadline)
                     .foregroundColor(.primary)
                     .lineLimit(nil)
@@ -144,7 +144,7 @@ struct TaskList: View {
         .frame(maxWidth: .infinity)
         .navigationTitle("Задачи")
         .onAppear {
-            presenter.loadTasks()
+            presenter.loadData()
         }
     }
 }
@@ -189,7 +189,7 @@ struct TaskListView: View {
         
     }
     func shareTask(_ task: Task) {
-        let activityVC = UIActivityViewController(activityItems: [task.title, task.description], applicationActivities: nil)
+        let activityVC = UIActivityViewController(activityItems: [task.title, task.descriptionData], applicationActivities: nil)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             rootVC.present(activityVC, animated: true, completion: nil)

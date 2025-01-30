@@ -10,7 +10,7 @@ struct TodosResponse: Codable {
 struct Task: Identifiable, Codable{
     let id: Int
     var title: String
-    var description: String
+    var descriptionData: String
     var dateCreated: Date
     var isCompleted: Bool
 
@@ -25,7 +25,7 @@ struct Task: Identifiable, Codable{
         
         id = try container.decode(Int.self, forKey: .id)
         title = try container.decode(String.self, forKey: .todo) // The key is "todo" in the dummy JSON
-        description = "Sample text" // Default to an empty string
+        descriptionData = "" // Default to an empty string
         dateCreated = Date() // Use today's date if no date is provided
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
     }
@@ -33,7 +33,7 @@ struct Task: Identifiable, Codable{
     init(id: Int, title: String, description: String = "", dateCreated: Date = Date(), isCompleted: Bool = false) {
             self.id = id
             self.title = title
-            self.description = description
+            self.descriptionData = description
             self.dateCreated = dateCreated
             self.isCompleted = isCompleted
     }
@@ -44,7 +44,7 @@ struct Task: Identifiable, Codable{
         
         try container.encode(id, forKey: .id)
         try container.encode(title, forKey: .todo) // The key is "todo" in the dummy JSON
-        try container.encode(description, forKey: .description)
+        try container.encode(descriptionData, forKey: .description)
         try container.encode(isCompleted, forKey: .completed)
     }
 

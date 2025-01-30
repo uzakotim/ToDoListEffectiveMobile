@@ -22,7 +22,7 @@ struct TaskDetailView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             
-            TextField("Введите описание", text:$presenter.task.description, axis: .vertical)
+            TextField("Введите описание", text:$presenter.task.descriptionData, axis: .vertical)
                 .font(.body)
                 .foregroundColor(.primary)
             

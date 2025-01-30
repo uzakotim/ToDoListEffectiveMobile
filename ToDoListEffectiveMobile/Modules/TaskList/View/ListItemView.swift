@@ -26,7 +26,7 @@ struct ListItemView: View {
                         .opacity(0)
                     VStack(alignment: .leading) {
                         
-                        Text(task.description)
+                        Text(task.descriptionData)
                             .font(.subheadline)
                             .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
                         Text(task.dateCreatedFormatted)

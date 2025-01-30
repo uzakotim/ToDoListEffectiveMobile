@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C89A22BB2D4B7742009F9205 /* CDTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */; };
+		C89A22BC2D4B7742009F9205 /* CDTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C8A40BF12D48EFD1004A7D51 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDTask+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C8A40BDB2D48EFD0004A7D51 /* ToDoListEffectiveMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoListEffectiveMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A40BF02D48EFD1004A7D51 /* ToDoListEffectiveMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoListEffectiveMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A40BFA2D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoListEffectiveMobileUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +113,8 @@
 		C8A40BD22D48EFD0004A7D51 = {
 			isa = PBXGroup;
 			children = (
+				C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */,
+				C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */,
 				C8A40BDD2D48EFD0004A7D51 /* ToDoListEffectiveMobile */,
 				C8A40BF32D48EFD1004A7D51 /* ToDoListEffectiveMobileTests */,
 				C8A40BFD2D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests */,
@@ -267,6 +276,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C89A22BB2D4B7742009F9205 /* CDTask+CoreDataClass.swift in Sources */,
+				C89A22BC2D4B7742009F9205 /* CDTask+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

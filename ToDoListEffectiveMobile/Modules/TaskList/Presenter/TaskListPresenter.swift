@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 class TaskListPresenter: ObservableObject {
     @Published var tasks: [Task] = []
@@ -11,7 +12,26 @@ class TaskListPresenter: ObservableObject {
         self.interactor = interactor
         self.router = router
     }
-
+    
+    func isFirstRun() -> Bool {
+        let hasRunBefore = UserDefaults.standard.bool(forKey: "hasRunBefore")
+        
+        if !hasRunBefore {
+            UserDefaults.standard.set(true, forKey: "hasRunBefore")
+            return true
+        }
+        return false
+    }
+    
+    func loadData() {
+        if isFirstRun(){
+            self.loadTasks()
+        }
+        else{
+            self.loadTasksFromCoreData()
+        }
+    }
+    
     func loadTasks() {
         interactor.fetchTasks { [weak self] result in
             DispatchQueue.main.async {
@@ -19,12 +39,55 @@ class TaskListPresenter: ObservableObject {
                 case .success(let tasks):
                     self?.tasks = tasks
                     self?.filteredTasks = tasks
+                    self?.saveTasks(tasks: tasks)
                 case .failure(let error):
                     print("Ошибка загрузки: \(error)")
                 }
             }
         }
     }
+    
+    func saveTasks(tasks: [Task]) {
+        let context = PersistenceController.shared.container.viewContext
+        for itemName in tasks {
+            let item = CDTask(context: context)
+            item.id = Int32(itemName.id)
+            item.dateCreated = itemName.dateCreated
+            item.title = itemName.title
+            item.descriptionData = itemName.descriptionData
+            item.isCompleted = itemName.isCompleted
+        }
+        do {
+            try context.save()
+            print("Array saved successfully")
+        } catch {
+            print("Failed to save array: \(error.localizedDescription)")
+        }
+    }
+    func loadTasksFromCoreData() {
+        let context = PersistenceController.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+        do {
+            let taskEntities = try context.fetch(fetchRequest)
+            var result = [] as [Task]  // Declare result outside the loop
+            for taskEntity in taskEntities {
+                let task = Task(
+                    id: Int(taskEntity.id),
+                    title: taskEntity.title ?? "",
+                    description: taskEntity.descriptionData ?? "",
+                    dateCreated: taskEntity.dateCreated ?? Date(),
+                    isCompleted: taskEntity.isCompleted
+                )
+                result.append(task)  // Append each task to the result array
+            }
+            self.tasks = result  // Assign the full result array to tasks
+            self.filteredTasks = self.tasks  // Update filtered tasks as well
+        } catch {
+            print("Ошибка загрузки из CoreData: \(error)")
+        }
+        print("Successfully loaded tasks from CoreData")
+    }
+
     func addNewTask() {
         router.navigateToAddTask()
     }
@@ -41,20 +104,15 @@ class TaskListPresenter: ObservableObject {
     }
     func deleteTask(at offsets: IndexSet) {
         offsets.forEach { index in
-//            let task = tasks[index]
             self.tasks.remove(at: index)
             self.filteredTasks = self.tasks
-//            interactor.deleteTask(task) {}
-//            { [weak self] in
-//                self?.loadTasks()
-//            }
         }
     }
     
     func deleteTask(task: Task) {
         self.tasks.removeAll() { $0.id == task.id }
         self.filteredTasks = self.tasks
-//        interactor.deleteTask(task) {}
+        //        interactor.deleteTask(task) {}
     }
     
     func searchTasks(query: String) {
@@ -65,3 +123,4 @@ class TaskListPresenter: ObservableObject {
         }
     }
 }
+
