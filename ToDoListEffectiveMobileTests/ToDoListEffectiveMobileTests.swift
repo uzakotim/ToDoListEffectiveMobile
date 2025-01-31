@@ -10,27 +10,47 @@ import XCTest
 
 final class ToDoListEffectiveMobileTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    func testLoadTasks() {
+            // Create an expectation to wait for async task
+            let expectation = XCTestExpectation(description: "Tasks are fetched")
+            
+            var fetchedTasks = [Task]()
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+            // Assuming you're testing the URLSession data task to fetch tasks
+            guard let url = URL(string: "https://dummyjson.com/todos") else {
+                XCTFail("Invalid URL")
+                return
+            }
+            
+            // Start the data task
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error {
+                    XCTFail("Error fetching data: \(error)")
+                    return
+                }
+                
+                guard let data = data else {
+                    XCTFail("No data returned")
+                    return
+                }
+                
+                do {
+                    let decodedResponse = try JSONDecoder().decode(TodosResponse.self, from: data)
+                    fetchedTasks = decodedResponse.todos
+                    print("Success")
+                } catch {
+                    XCTFail("Failed to decode JSON: \(error)")
+                }
+                
+                // Fulfill the expectation to signal that the async task is done
+                expectation.fulfill()
+            }.resume()
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+            // Wait for the expectation to be fulfilled or time out after 5 seconds
+            wait(for: [expectation], timeout: 10)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+            // Assert that the number of tasks is 30
+            XCTAssertEqual(fetchedTasks.count, 30, "The number of tasks should be 30.")
         }
-    }
 
 }
