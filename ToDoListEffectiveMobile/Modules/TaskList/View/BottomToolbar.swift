@@ -30,6 +30,7 @@ struct BottomToolbar: View {
                     Image(systemName: "square.and.pencil")
                         .foregroundColor(.yellow)
                 }
+                .accessibilityIdentifier("square.and.pencil")
             }
         }
     }

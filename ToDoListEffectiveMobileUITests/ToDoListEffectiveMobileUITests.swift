@@ -26,15 +26,48 @@ final class ToDoListEffectiveMobileUITests: XCTestCase {
     
     @MainActor
     func testDidLoad() throws {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        // Find the text element that contains the word "Задачи"
+        // Найти text element, который содержит слово "Задачи"
         let textElement = app.staticTexts["Задачи"]
-
-        // Assert that the element exists
         XCTAssertTrue(textElement.exists, "The text 'Задачи' should be present on the screen")
     }
+    func testNavigate() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Нажать на кнопку "square.and.pencil"
+        let editButton = app.buttons["square.and.pencil"]
+        XCTAssertTrue(editButton.exists, "The edit button should exist on the screen")
+        editButton.tap()
+        
+        // Нажать на кропку назад
+        let backButton = app.buttons.containing(NSPredicate(format: "label CONTAINS 'Назад'")).firstMatch
+        XCTAssertTrue(backButton.exists, "The back button should exist on the screen")
+        backButton.tap()
+        XCTAssertTrue(editButton.waitForExistence(timeout: 5), "The edit button should reappear after going back")
+    }
+    
+    func testNavigateAndFindTextField() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Нажать на кнопку "square.and.pencil"
+        let editButton = app.buttons["square.and.pencil"]
+        XCTAssertTrue(editButton.exists, "The edit button should exist on the screen")
+        editButton.tap()
+        
+        // Найти Введите описание
+        let textField = app.textFields["text.field"]
+        XCTAssertTrue(textField.exists, "The title text field should be visible")
+        // Проперить исчезла ли запись при нажатии
+        textField.tap()
+        textField.typeText("Some Text")
+        XCTAssertFalse(textField.value as? String == "Введите описание",
+                       "Placeholder should disappear when typing.")
+    }
+    
+    
 
 //    @MainActor
 //    func testLaunchPerformance() throws {

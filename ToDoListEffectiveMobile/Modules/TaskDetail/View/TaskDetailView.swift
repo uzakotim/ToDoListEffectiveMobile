@@ -16,6 +16,7 @@ struct TaskDetailView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .contentShape(Rectangle())
+                .accessibilityIdentifier("text.field")
             Text("\(task.dateCreatedFormatted)")
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -40,6 +41,7 @@ struct TaskDetailView: View {
                    Image(systemName: "chevron.left")
                    Text("Назад")
                }
+               
                .foregroundColor(.yellow)
            })
     }
