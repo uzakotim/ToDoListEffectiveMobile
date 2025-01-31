@@ -1,8 +1,8 @@
 # ToDoListEffectiveMobile
 A ToDo list iOS app for Effective Mobile
 # Requirements
-XCode 16+
-iOS 18.2+
+* XCode 16+
+* iOS 18.2+
 # Architecture
 VIPER (View, Interactor, Presenter, Entity, and Routing)
 # Features
