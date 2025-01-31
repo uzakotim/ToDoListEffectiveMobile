@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "4A3E44EE-9D72-4FE8-B533-B40CE76F9A2D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ToDoListEffectiveMobile.xcodeproj",
+        "identifier" : "C8A40BF92D48EFD1004A7D51",
+        "name" : "ToDoListEffectiveMobileUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ToDoListEffectiveMobile.xcodeproj",
+        "identifier" : "C8A40BEF2D48EFD1004A7D51",
+        "name" : "ToDoListEffectiveMobileTests"
+      }
+    }
+  ],
+  "version" : 1
+}
