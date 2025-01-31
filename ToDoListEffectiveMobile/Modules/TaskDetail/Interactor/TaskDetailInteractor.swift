@@ -18,7 +18,6 @@ class TaskDetailInteractor: TaskDetailInteractorProtocol {
         self.task = task
     }
     func fetchTaskDetails() -> Task {
-        // Your logic to fetch task details based on the passed task
         return task
     }
 }

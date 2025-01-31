@@ -21,9 +21,6 @@ class TaskDetailPresenter: ObservableObject {
         self.task = interactor.task
         self.router = router
     }
-    func goBack() {
-//        router.navigateBack()
-    }
     func updateTask(task: Task, title: String, descriptionData: String) {
         let context = PersistenceController.shared.container.newBackgroundContext()
         context.perform {
