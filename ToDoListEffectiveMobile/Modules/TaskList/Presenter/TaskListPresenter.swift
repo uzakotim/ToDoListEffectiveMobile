@@ -50,45 +50,50 @@ class TaskListPresenter: ObservableObject {
     }
     
     func saveTasks(tasks: [Task]) {
-        let context = PersistenceController.shared.container.viewContext
-        for itemName in tasks {
-            let item = CDTask(context: context)
-            item.id = Int32(itemName.id)
-            item.dateCreated = itemName.dateCreated
-            item.title = itemName.title
-            item.descriptionData = itemName.descriptionData
-            item.isCompleted = itemName.isCompleted
-        }
-        do {
-            try context.save()
-            print("Array saved successfully")
-        } catch {
-            print("Failed to save array: \(error.localizedDescription)")
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        context.perform {
+            for itemName in tasks {
+                let item = CDTask(context: context)
+                item.id = Int32(itemName.id)
+                item.dateCreated = itemName.dateCreated
+                item.title = itemName.title
+                item.descriptionData = itemName.descriptionData
+                item.isCompleted = itemName.isCompleted
+            }
+            do {
+                try context.save()
+                print("Array saved successfully")
+            } catch {
+                print("Failed to save array: \(error.localizedDescription)")
+            }
         }
     }
     func loadTasksFromCoreData() {
-        let context = PersistenceController.shared.container.viewContext
-        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
-        do {
-            let taskEntities = try context.fetch(fetchRequest)
-            var result = [] as [Task]  // Declare result outside the loop
-            for taskEntity in taskEntities {
-                let task = Task(
-                    id: Int(taskEntity.id),
-                    title: taskEntity.title ?? "",
-                    description: taskEntity.descriptionData ?? "",
-                    dateCreated: taskEntity.dateCreated ?? Date(),
-                    isCompleted: taskEntity.isCompleted
-                )
-                result.append(task)  // Append each task to the result array
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        context.perform {
+            let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+            do {
+                let taskEntities = try context.fetch(fetchRequest)
+                let result = taskEntities.map { taskEntity in
+                    Task(
+                        id: Int(taskEntity.id),
+                        title: taskEntity.title ?? "",
+                        description: taskEntity.descriptionData ?? "",
+                        dateCreated: taskEntity.dateCreated ?? Date(),
+                        isCompleted: taskEntity.isCompleted
+                    )
+                }
+                DispatchQueue.main.async {
+                    self.tasks = result.sorted { $0.dateCreated > $1.dateCreated }
+                    self.filteredTasks = self.tasks
+                    print("Successfully loaded tasks from CoreData")
+                }
+            } catch {
+                print("Error loading from CoreData: \(error)")
             }
-            self.tasks = result.sorted { $0.dateCreated > $1.dateCreated }  
-            self.filteredTasks = self.tasks  // Update filtered tasks as well
-        } catch {
-            print("Ошибка загрузки из CoreData: \(error)")
         }
-        print("Successfully loaded tasks from CoreData")
     }
+
 
     func addNewTask() {
         router.navigateToAddTask()
@@ -97,59 +102,69 @@ class TaskListPresenter: ObservableObject {
         _ = router.navigateToTaskDetails(with: task)
     }
 
-    func toggleTask(task: Task){
-        let context = PersistenceController.shared.container.viewContext
-        
-        // Create a fetch request to find the task by its ID
-        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)  // Assuming 'id' is unique
-        
-        do {
-            let taskEntities = try context.fetch(fetchRequest)
+    func toggleTask(task: Task) {
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        context.perform {
+            let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)
             
-            // Assuming the task exists, delete it
-            if let taskEntity = taskEntities.first {
-                taskEntity.isCompleted.toggle()
-                try context.save()  // Save the context to persist the deletion
-                print("Task completion toggled successfully in Core Data")
+            do {
+                let taskEntities = try context.fetch(fetchRequest)
+                if let taskEntity = taskEntities.first {
+                    taskEntity.isCompleted.toggle()
+                    try context.save()
+                    print("Task completion toggled successfully in Core Data")
+
+                    DispatchQueue.main.async {
+                        if let index = self.tasks.firstIndex(where: { $0.id == task.id }) {
+                            self.tasks[index].isCompleted.toggle()
+                        }
+                        self.filteredTasks = self.tasks
+                    }
+                }
+            } catch {
+                print("Failed to toggle task: \(error.localizedDescription)")
             }
-        } catch {
-            print("Failed to delete task: \(error.localizedDescription)")
         }
-        // find task in tasks
-        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-            tasks[index].isCompleted.toggle()
-        }
-        self.filteredTasks = self.tasks
     }
-    func deleteTask(task: Task) {
-        let context = PersistenceController.shared.container.viewContext
-        
-        // Create a fetch request to find the task by its ID
-        let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)  // Assuming 'id' is unique
-        
-        do {
-            let taskEntities = try context.fetch(fetchRequest)
-            
-            // Assuming the task exists, delete it
-            if let taskEntity = taskEntities.first {
-                context.delete(taskEntity)  // Delete the fetched object
-                try context.save()  // Save the context to persist the deletion
-                print("Task deleted successfully")
-            }
-        } catch {
-            print("Failed to delete task: \(error.localizedDescription)")
-        }
-        self.tasks.removeAll() { $0.id == task.id }
-        self.filteredTasks = self.tasks
-    }
+
     
+    func deleteTask(task: Task) {
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        context.perform {
+            let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %d", task.id)
+            
+            do {
+                let taskEntities = try context.fetch(fetchRequest)
+                if let taskEntity = taskEntities.first {
+                    context.delete(taskEntity)
+                    try context.save()
+                    print("Task deleted successfully")
+
+                    DispatchQueue.main.async {
+                        self.tasks.removeAll { $0.id == task.id }
+                        self.filteredTasks = self.tasks
+                    }
+                }
+            } catch {
+                print("Failed to delete task: \(error.localizedDescription)")
+            }
+        }
+    }
     func searchTasks(query: String) {
-        if query.isEmpty {
-            filteredTasks = tasks
-        } else {
-            filteredTasks = tasks.filter { $0.title.lowercased().contains(query.lowercased()) }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let filteredResults: [Task]
+            
+            if query.isEmpty {
+                filteredResults = self.tasks
+            } else {
+                filteredResults = self.tasks.filter { $0.title.lowercased().contains(query.lowercased()) }
+            }
+            
+            DispatchQueue.main.async {
+                self.filteredTasks = filteredResults
+            }
         }
     }
 }
