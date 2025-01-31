@@ -15,6 +15,13 @@
     {
       "target" : {
         "containerPath" : "container:ToDoListEffectiveMobile.xcodeproj",
+        "identifier" : "C8A40BF92D48EFD1004A7D51",
+        "name" : "ToDoListEffectiveMobileUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ToDoListEffectiveMobile.xcodeproj",
         "identifier" : "C8A40BEF2D48EFD1004A7D51",
         "name" : "ToDoListEffectiveMobileTests"
       }

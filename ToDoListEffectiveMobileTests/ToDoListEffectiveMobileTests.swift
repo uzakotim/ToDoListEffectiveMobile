@@ -62,4 +62,5 @@ final class ToDoListEffectiveMobileTests: XCTestCase {
         XCTAssertEqual(presenter.filteredTasks.count, 1)
         XCTAssertEqual(presenter.filteredTasks.first?.title, "Buy Milk")
     }
+    
 }
