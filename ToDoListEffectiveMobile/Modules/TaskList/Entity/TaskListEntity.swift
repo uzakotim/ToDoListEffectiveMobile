@@ -1,3 +1,10 @@
+//
+//  TaskListEntity.swift
+//  ToDoListEffectiveMobile
+//
+//  Created by Timur Uzakov on 31/01/25.
+//
+
 import Foundation
 
 // Декларация основных структур данных, используемых в приложении

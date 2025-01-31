@@ -1,6 +1,10 @@
+//
+//  TaskListView.swift
+//  ToDoListEffectiveMobile
+//
+//  Created by Timur Uzakov on 31/01/25.
+//
 import SwiftUI
-
-
 
 struct TaskList: View {
     let tasks: [Task]
