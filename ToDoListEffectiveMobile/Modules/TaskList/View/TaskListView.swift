@@ -40,7 +40,7 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass") // Search icon
                 .foregroundColor(Color(UIColor.placeholderText))
 
-            TextField("Search", text: $searchText)
+            TextField("Поиск", text: $searchText)
                 .textFieldStyle(PlainTextFieldStyle()) // Plain style for custom background
                 .cornerRadius(6)
                 .padding(.vertical, 8)  // Adjust vertical padding
@@ -160,6 +160,7 @@ struct TaskList: View {
             }
             
         }
+        .environment(\.locale, Locale(identifier: "ru"))
         .listStyle(PlainListStyle())
         .background(Color(.systemBackground))
         .navigationDestination(isPresented: $isNavigatingToTaskDetail){
