@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		C89A22BB2D4B7742009F9205 /* CDTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */; };
 		C89A22BC2D4B7742009F9205 /* CDTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */; };
+		C8D186C52D4D1BC3008DB585 /* CDTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */; };
+		C8D186C62D4D1BC3008DB585 /* CDTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22B92D4B7742009F9205 /* CDTask+CoreDataClass.swift */; };
+		C8D186C72D4D1BC8008DB585 /* CDTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */; };
+		C8D186C82D4D1BC8008DB585 /* CDTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89A22BA2D4B7742009F9205 /* CDTask+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +44,11 @@
 		C82FB5692D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ContentView.swift,
+				Modules/TaskDetail/Interactor/TaskDetailInteractor.swift,
+				Modules/TaskDetail/Presenter/TaskDetailPresenter.swift,
+				Modules/TaskDetail/Router/TaskDetailRouter.swift,
+				Modules/TaskDetail/View/TaskDetailView.swift,
 				Modules/TaskList/Entity/TaskListEntity.swift,
 				Modules/TaskList/Interactor/TaskListInteractor.swift,
 				Modules/TaskList/Presenter/TaskListPresenter.swift,
@@ -49,12 +58,20 @@
 				Modules/TaskList/View/ListItemView.swift,
 				Modules/TaskList/View/SearchBar.swift,
 				Modules/TaskList/View/TaskListView.swift,
+				Persistence.swift,
+				ToDoListEffectiveMobile.xcdatamodeld,
+				ToDoListEffectiveMobileApp.swift,
 			);
 			target = C8A40BEF2D48EFD1004A7D51 /* ToDoListEffectiveMobileTests */;
 		};
 		C82FB56A2D48F43100E13033 /* Exceptions for "ToDoListEffectiveMobile" folder in "ToDoListEffectiveMobileUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ContentView.swift,
+				Modules/TaskDetail/Interactor/TaskDetailInteractor.swift,
+				Modules/TaskDetail/Presenter/TaskDetailPresenter.swift,
+				Modules/TaskDetail/Router/TaskDetailRouter.swift,
+				Modules/TaskDetail/View/TaskDetailView.swift,
 				Modules/TaskList/Entity/TaskListEntity.swift,
 				Modules/TaskList/Interactor/TaskListInteractor.swift,
 				Modules/TaskList/Presenter/TaskListPresenter.swift,
@@ -64,6 +81,9 @@
 				Modules/TaskList/View/ListItemView.swift,
 				Modules/TaskList/View/SearchBar.swift,
 				Modules/TaskList/View/TaskListView.swift,
+				Persistence.swift,
+				ToDoListEffectiveMobile.xcdatamodeld,
+				ToDoListEffectiveMobileApp.swift,
 			);
 			target = C8A40BF92D48EFD1004A7D51 /* ToDoListEffectiveMobileUITests */;
 		};
@@ -299,6 +319,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8D186C52D4D1BC3008DB585 /* CDTask+CoreDataClass.swift in Sources */,
+				C8D186C72D4D1BC8008DB585 /* CDTask+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +328,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8D186C62D4D1BC3008DB585 /* CDTask+CoreDataClass.swift in Sources */,
+				C8D186C82D4D1BC8008DB585 /* CDTask+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
