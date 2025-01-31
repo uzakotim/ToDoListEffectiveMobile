@@ -51,16 +51,16 @@ struct SearchBar: View {
                 }
                 .disableAutocorrection(true)  // Disable autocorrect for dictation
 
-//            Button(action: {
+            Button(action: {
 //                if speechManager.isDictating {
 //                    speechManager.stopDictation()
 //                } else {
 //                    speechManager.startDictation()
 //                }
-//            }) {
-//                Image(systemName: "mic.fill") // Microphone icon
-//                    .foregroundColor(Color(UIColor.placeholderText))
-//            }
+            }) {
+                Image(systemName: "mic.fill") // Microphone icon
+                    .foregroundColor(Color(UIColor.placeholderText))
+            }
             Spacer()
         }
         .background(Color(.secondarySystemBackground))
