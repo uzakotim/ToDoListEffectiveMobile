@@ -14,6 +14,7 @@ class TaskListPresenter: ObservableObject {
     }
     
     func isFirstRun() -> Bool {
+        // Проверка на первый запуск
         let hasRunBefore = UserDefaults.standard.bool(forKey: "hasRunBefore")
         
         if !hasRunBefore {
@@ -24,6 +25,7 @@ class TaskListPresenter: ObservableObject {
     }
     
     func loadData() {
+        // Основная логика при запуске
         if isFirstRun(){
             self.loadTasks()
         }
@@ -33,11 +35,12 @@ class TaskListPresenter: ObservableObject {
     }
     
     func loadTasks() {
+        // Загрузка задач из API
         interactor.fetchTasks { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let tasks):
-                    // sort tasks by id
+                    // Сортировка по id для dummy todo листа
                     let sortedTasks = tasks.sorted { $0.id > $1.id }
                     self?.tasks = sortedTasks
                     self?.filteredTasks = sortedTasks
@@ -50,6 +53,7 @@ class TaskListPresenter: ObservableObject {
     }
     
     func saveTasks(tasks: [Task]) {
+        // Сохранение задач в CoreData
         let context = PersistenceController.shared.container.newBackgroundContext()
         context.perform {
             for itemName in tasks {
@@ -69,6 +73,7 @@ class TaskListPresenter: ObservableObject {
         }
     }
     func loadTasksFromCoreData() {
+        // Загрузка задач из CoreData
         let context = PersistenceController.shared.container.newBackgroundContext()
         context.perform {
             let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
@@ -84,6 +89,7 @@ class TaskListPresenter: ObservableObject {
                     )
                 }
                 DispatchQueue.main.async {
+                    // Сортировка по дате для последующих запусков приложения
                     self.tasks = result.sorted { $0.dateCreated > $1.dateCreated }
                     self.filteredTasks = self.tasks
                     print("Successfully loaded tasks from CoreData")
@@ -94,15 +100,12 @@ class TaskListPresenter: ObservableObject {
         }
     }
 
-
-    func addNewTask() {
-        router.navigateToAddTask()
-    }
     func openTaskDetails(for task: Task) {
         _ = router.navigateToTaskDetails(with: task)
     }
 
     func toggleTask(task: Task) {
+        // Функция меняющее состояние (выполнена или нет) задачи
         let context = PersistenceController.shared.container.newBackgroundContext()
         context.perform {
             let fetchRequest: NSFetchRequest<CDTask> = CDTask.fetchRequest()
@@ -153,6 +156,7 @@ class TaskListPresenter: ObservableObject {
         }
     }
     func searchTasks(query: String) {
+        // Логика поиска задачи
         DispatchQueue.global(qos: .userInitiated).async {
             let filteredResults: [Task]
             

@@ -11,7 +11,6 @@ struct BottomToolbar: View {
     @Binding var isNavigatingToTaskDetail: Bool
     @Binding var selectedTask: Task
     
-    // create int from UUID
     let emptyTask: Task = .init(id: -1, title: "", description: "", isCompleted: false)
     var body: some View {
         ZStack{
@@ -35,6 +34,7 @@ struct BottomToolbar: View {
         }
     }
     private func pluralizeTask(count: Int) -> String {
+            // Логика склонения слова задача
             let mod10 = count % 10
             let mod100 = count % 100
 

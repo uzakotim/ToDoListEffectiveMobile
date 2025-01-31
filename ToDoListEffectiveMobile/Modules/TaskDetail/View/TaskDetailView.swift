@@ -6,9 +6,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
-
 struct TaskDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var presenter: TaskDetailPresenter
@@ -37,7 +34,7 @@ struct TaskDetailView: View {
             else{
                 presenter.updateTask(task: task, title: presenter.task.title, descriptionData: presenter.task.descriptionData)
             }
-            dismiss() // Dismiss the view when back button is pressed
+            dismiss()
            }) {
                HStack( spacing: 0.0){
                    Image(systemName: "chevron.left")

@@ -14,16 +14,18 @@ protocol TaskDetailRouterProtocol {
 
 class TaskDetailRouter: TaskDetailRouterProtocol{
     func navigateBack() -> any View {
+        // Перейти в главный лист
         let interactor = TaskListInteractor()
-        let router = TaskListRouter()// A new interactor for TaskList
+        let router = TaskListRouter()
         let presenter = TaskListPresenter(interactor: interactor, router: router)
         let view = TaskListView(presenter: presenter)
         return view
     }
 
     func createModule(task: Task) -> TaskDetailView {
+        // Создать экран задачи, подробный
         let interactor = TaskDetailInteractor(task: task)
-        let router = TaskDetailRouter()// A new interactor for TaskList
+        let router = TaskDetailRouter()
         let presenter = TaskDetailPresenter(interactor: interactor, router: router)
         let view = TaskDetailView(presenter: presenter, task: task)
         return view

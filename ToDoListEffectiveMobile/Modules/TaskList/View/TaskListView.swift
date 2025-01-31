@@ -1,6 +1,5 @@
 import SwiftUI
-import Speech
-import AVFoundation
+
 
 
 struct TaskList: View {
@@ -38,8 +37,8 @@ struct TaskList: View {
             
             .onDelete { indexSet in
                 for index in indexSet {
-                    let taskToDelete = presenter.tasks[index] // Get the task at the index
-                    presenter.deleteTask(task: taskToDelete) // Delete the task from Core Data
+                    let taskToDelete = presenter.tasks[index]
+                    presenter.deleteTask(task: taskToDelete)
                 }
             }
             
@@ -69,29 +68,31 @@ struct TaskListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                        // Main content
-                        SearchBar(searchText: $searchText, presenter: presenter)
-                        TaskList(
-                            tasks: presenter.filteredTasks,
-                            onEdit: { task in
-                                selectedTask = task
-                                isNavigatingToTaskDetail = true
-                            },
-                            onDelete: presenter.deleteTask,
-                            onShare: shareTask,
-                            presenter: presenter,
-                            isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
-                            selectedTask: $selectedTask
-                        )
-                
+                // Структура основного экрана
+                // Верхняя секция
+                SearchBar(searchText: $searchText, presenter: presenter)
+                // Основная секция
+                TaskList(
+                    tasks: presenter.filteredTasks,
+                    onEdit: { task in
+                        selectedTask = task
+                        isNavigatingToTaskDetail = true
+                    },
+                    onDelete: presenter.deleteTask,
+                    onShare: shareTask,
+                    presenter: presenter,
+                    isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
+                    selectedTask: $selectedTask
+                )
             }
             .toolbar{
+                // Нижняя секция
                 ToolbarItem(placement: .bottomBar) {
-                    BottomToolbar(presenter: presenter, isNavigatingToTaskDetail: $isNavigatingToTaskDetail, selectedTask: $selectedTask
+                    BottomToolbar(presenter: presenter,
+                                  isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
+                                  selectedTask: $selectedTask
                     )
-                    
                 }
-                
             }
             .toolbarBackground(Color(UIColor.systemBackground), for: .tabBar)
             .toolbarBackground(Color(UIColor.secondarySystemBackground), for: .automatic)
@@ -99,7 +100,10 @@ struct TaskListView: View {
         
     }
     func shareTask(_ task: Task) {
-        let activityVC = UIActivityViewController(activityItems: [task.title, task.descriptionData], applicationActivities: nil)
+        // Фунцкия для того, чтобы поделиться задачей
+        let activityVC = UIActivityViewController(activityItems:
+                                                    [task.title, task.descriptionData],
+                                                    applicationActivities: nil)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             rootVC.present(activityVC, animated: true, completion: nil)
