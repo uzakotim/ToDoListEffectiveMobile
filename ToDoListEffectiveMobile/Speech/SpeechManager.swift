@@ -88,13 +88,13 @@ class SpeechRecognitionManager: ObservableObject {
     }
     func requestPermissions() {
         // Request microphone permission
-        AVAudioSession.sharedInstance().requestRecordPermission { (isGranted) in
-            if isGranted {
-                print("Microphone permission granted")
-            } else {
-                print("Microphone permission denied")
-            }
-        }
+//        AVAudioSession.sharedInstance().requestRecordPermission { (isGranted) in
+//            if isGranted {
+//                print("Microphone permission granted")
+//            } else {
+//                print("Microphone permission denied")
+//            }
+//        }
         
         // Request speech recognition permission
         SFSpeechRecognizer.requestAuthorization { authStatus in
