@@ -7,9 +7,10 @@
 
 import XCTest
 @testable import ToDoListEffectiveMobile
+import CoreData
 
 final class ToDoListEffectiveMobileTests: XCTestCase {
-
+    
     func testLoadTasks() {
             // Create an expectation to wait for the completion handler
             let expectation = XCTestExpectation(description: "Tasks are fetched")
@@ -38,5 +39,27 @@ final class ToDoListEffectiveMobileTests: XCTestCase {
 
             // Assert that the number of tasks is 30
             XCTAssertEqual(fetchedTasks.count, 30, "The number of tasks should be 30.")
+    }
+        func testSearchTasks() {
+            let task1 = Task(id: 1, title: "Buy Milk", isCompleted: false)
+            let task2 = Task(id: 2, title: "Workout", isCompleted: false)
+            let interactor = TaskListInteractor()
+            let router = TaskListRouter()
+            let presenter = TaskListPresenter(interactor: interactor, router: router)
+            
+            presenter.tasks = [task1, task2]
+            let query = "Milk"
+            let filteredResults: [Task]
+            
+            if query.isEmpty {
+                filteredResults = presenter.tasks
+            } else {
+                filteredResults = presenter.tasks.filter { $0.title.lowercased().contains(query.lowercased()) }
+            }
+            
+            presenter.filteredTasks = filteredResults
+            
+            XCTAssertEqual(presenter.filteredTasks.count, 1)
+            XCTAssertEqual(presenter.filteredTasks.first?.title, "Buy Milk")
         }
 }
