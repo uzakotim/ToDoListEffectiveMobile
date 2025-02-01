@@ -67,7 +67,28 @@ final class ToDoListEffectiveMobileUITests: XCTestCase {
                        "Placeholder should disappear when typing.")
     }
     
-    
+   func testNewTaskBeingCreated() {
+       let app = XCUIApplication()
+       app.launch()
+       // Нажать на кнопку "square.and.pencil"
+       let editButton = app.buttons["square.and.pencil"]
+       XCTAssertTrue(editButton.exists, "The edit button should exist on the screen")
+       editButton.tap()
+       // Найти Введите описание
+       let textField = app.textFields["text.field"]
+       XCTAssertTrue(textField.exists, "The title text field should be visible")
+       // Проперить исчезла ли запись при нажатии
+       textField.tap()
+       textField.typeText("Some new text")
+       // Нажать на кропку назад
+       let backButton = app.buttons.containing(NSPredicate(format: "label CONTAINS 'Назад'")).firstMatch
+       XCTAssertTrue(backButton.exists, "The back button should exist on the screen")
+       backButton.tap()
+       
+       let newTask = app.staticTexts["Some new text"]
+       XCTAssertTrue(newTask.waitForExistence(timeout: 5), "The new task should be visible")
+       
+    }
 
 //    @MainActor
 //    func testLaunchPerformance() throws {
