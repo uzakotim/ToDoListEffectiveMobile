@@ -6,33 +6,42 @@
 //
 import SwiftUI
 
+// Представление списка задач
 struct TaskList: View {
-    let tasks: [Task]
-    let onEdit: (Task) -> Void
-    let onDelete: (Task) -> Void
-    let onShare: (Task) -> Void
-    @ObservedObject var presenter: TaskListPresenter
-    @Binding var isNavigatingToTaskDetail: Bool
-    @Binding var selectedTask: Task
+    let tasks: [Task] // Массив задач
+    let onEdit: (Task) -> Void // Коллбэк для редактирования задачи
+    let onDelete: (Task) -> Void // Коллбэк для удаления задачи
+    let onShare: (Task) -> Void // Коллбэк для шаринга задачи
+    @ObservedObject var presenter: TaskListPresenter // Презентер, управляющий данными
+    @Binding var isNavigatingToTaskDetail: Bool // Флаг навигации к деталям задачи
+    @Binding var selectedTask: Task // Выбранная задача
+    
     var body: some View {
         List {
             ForEach(tasks) { task in
+                // Определяем, является ли задача последней в списке
                 let isLast = tasks.firstIndex(of: task)! == self.tasks.count - 1
+                // Отображение отдельной задачи
                 ListItemView(task: task, isLast: isLast)
+                    // Определение области кликабельности
                     .contentShape(Rectangle())
                     .contextMenu {
                         Button(action: { onEdit(task) }) {
+                            // Кнопка редактирования
                             Label("Редактировать", systemImage: "square.and.pencil")
                         }
                         Button(action: { onShare(task) }) {
+                            // Кнопка поделиться
                             Label("Поделиться", systemImage: "square.and.arrow.up")
                         }
                         Button(role: .destructive, action: { onDelete(task) }) {
+                            // Кнопка удаления
                             Label("Удалить", systemImage: "trash")
                         }
-                    } preview: { CustomContextMenuPreviewView(task: task) }
-                    .listRowSeparator(.hidden)
+                    } preview: { CustomContextMenuPreviewView(task: task) } // Превью контекстного меню
+                    .listRowSeparator(.hidden) // Скрытие разделителя строк
                     .onTapGesture {
+                        // Переключение состояния задачи по нажатию
                         presenter.toggleTask(task: task)
                     }
                     
@@ -44,33 +53,40 @@ struct TaskList: View {
             .onDelete { indexSet in
                 for index in indexSet {
                     let taskToDelete = presenter.tasks[index]
+                    // Удаление задачи
                     presenter.deleteTask(task: taskToDelete)
                 }
             }
             
         }
-       
+        // Установка локали на русский язык
         .environment(\.locale, Locale(identifier: "ru"))
+        // Установка стиля списка
         .listStyle(PlainListStyle())
+        // Фон списка
         .background(Color(.systemBackground))
+        // Навигация к деталям задачи
         .navigationDestination(isPresented: $isNavigatingToTaskDetail){
             presenter.router.navigateToTaskDetails(with: selectedTask)
         }
+        // Максимальная ширина
         .frame(maxWidth: .infinity)
+        // Заголовок страницы
         .navigationTitle("Задачи")
+        // Загрузка данных при появлении экрана
         .onAppear {
             presenter.loadData()
         }
     }
     
 }
-
+// Главное представление списка задач
 struct TaskListView: View {
-    @ObservedObject var presenter: TaskListPresenter
-    @State private var isNavigatingToTaskDetail = false
-    @State private var searchText: String = ""
-    @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false)
-
+    @ObservedObject var presenter: TaskListPresenter // Презентер списка задач
+    @State private var isNavigatingToTaskDetail = false // Флаг навигации
+    @State private var searchText: String = "" // Текст поиска
+    @State private var selectedTask: Task = Task(id: 0, title: "", description: "", isCompleted: false) // Выбранная задача
+      
     var body: some View {
         NavigationStack {
             VStack {
@@ -92,7 +108,7 @@ struct TaskListView: View {
                 )
             }
             .toolbar{
-                // Нижняя секция
+                // Нижняя панель инструментов
                 ToolbarItem(placement: .bottomBar) {
                     BottomToolbar(presenter: presenter,
                                   isNavigatingToTaskDetail: $isNavigatingToTaskDetail,
@@ -116,6 +132,7 @@ struct TaskListView: View {
         }
     }
 }
+// Превью представления списка задач
 struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
         let interactor = TaskListInteractor()
