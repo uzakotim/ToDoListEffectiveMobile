@@ -6,36 +6,41 @@
 //
 import SwiftUI
 
+// Нижняя панель инструментов для списка задач
 struct BottomToolbar: View {
-    @ObservedObject var presenter: TaskListPresenter
-    @Binding var isNavigatingToTaskDetail: Bool
-    @Binding var selectedTask: Task
+    @ObservedObject var presenter: TaskListPresenter // Презентер списка задач
+    @Binding var isNavigatingToTaskDetail: Bool // Флаг навигации к экрану деталей задачи
+    @Binding var selectedTask: Task // Выбранная задача
     
-    let emptyTask: Task = .init(id: -1, title: "", description: "", isCompleted: false)
+    let emptyTask: Task = .init(id: -1, title: "", description: "", isCompleted: false) // Пустая задача для создания новой
     var body: some View {
         ZStack{
             HStack{
                 Spacer()
+                // Отображение количества задач с правильным склонением слова "задача"
                 Text("\(presenter.filteredTasks.count) \(pluralizeTask(count: presenter.filteredTasks.count))")
-                    .font(.caption).fontWeight(.light).foregroundColor(Color(UIColor.placeholderText))
+                    .font(.caption)
+                    .fontWeight(.light)
+                    .foregroundColor(Color(UIColor.placeholderText))
                 Spacer()
             }
            
             HStack{
                 Spacer()
+                // Кнопка для добавления новой задачи
                 Button(action: {
-                    isNavigatingToTaskDetail = true
-                    selectedTask = emptyTask
+                    isNavigatingToTaskDetail = true // Активируем переход к экрану деталей
+                    selectedTask = emptyTask // Устанавливаем пустую задачу
                 }) {
-                    Image(systemName: "square.and.pencil")
-                        .foregroundColor(.yellow)
+                    Image(systemName: "square.and.pencil") // Иконка кнопки
+                        .foregroundColor(.yellow) // Цвет иконки
                 }
-                .accessibilityIdentifier("square.and.pencil")
+                .accessibilityIdentifier("square.and.pencil") // Идентификатор для UI-тестирования
             }
         }
     }
     private func pluralizeTask(count: Int) -> String {
-            // Логика склонения слова задача
+            // Логика склонения слова "задача" в зависимости от количества
             let mod10 = count % 10
             let mod100 = count % 100
 
