@@ -37,6 +37,8 @@ struct TaskList: View {
                         presenter.toggleTask(task: task)
                     }
                     
+
+                    
             }
             
             .onDelete { indexSet in

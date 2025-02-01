@@ -11,7 +11,6 @@ struct ListItemView: View {
     var body: some View {
         Section{
             VStack(alignment: .leading){
-                
                 VStack(alignment: .leading) {
                     HStack{
                         Image(systemName: task.isCompleted ? "checkmark.circle" : "circle")
@@ -27,12 +26,18 @@ struct ListItemView: View {
                             .imageScale(.large)
                             .opacity(0)
                         VStack(alignment: .leading) {
-                            Text(task.descriptionData)
-                                .font(.subheadline)
-                                .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                            if !task.descriptionData.isEmpty
+                            {
+                                Text(task.descriptionData)
+                                    .font(.subheadline)
+                                    .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                            }
                             Text(task.dateCreatedFormatted)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.placeholderText))
+                            if task.descriptionData.isEmpty {
+                                Spacer()
+                            }
                         }.padding(0)
                     }
                     .padding(0)
@@ -45,5 +50,20 @@ struct ListItemView: View {
                     .padding(0)
             }
         }
+    }
+}
+
+struct ListItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        let sampleTask = Task(
+            id: 1,
+            title: "Workout",
+            description: "",
+            dateCreated: Date(),
+            isCompleted: false
+        )
+
+
+        return ListItemView(task: sampleTask)
     }
 }
