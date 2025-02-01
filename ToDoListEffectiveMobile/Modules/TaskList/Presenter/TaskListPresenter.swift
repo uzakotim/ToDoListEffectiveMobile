@@ -7,12 +7,15 @@
 import SwiftUI
 import CoreData
 
+// Презентер для управления списком задач
 class TaskListPresenter: ObservableObject {
-    @Published var tasks: [Task] = []
-    @Published var filteredTasks: [Task] = []
 
-    private let interactor: TaskListInteractorProtocol
-    public let router: TaskListRouterProtocol
+    
+    @Published var tasks: [Task] = [] // Все задачи
+    @Published var filteredTasks: [Task] = [] // Отфильтрованные задачи
+
+    private let interactor: TaskListInteractorProtocol // Интерфейс взаимодействия с данными
+    public let router: TaskListRouterProtocol // Интерфейс для навигации
 
     init(interactor: TaskListInteractor, router: TaskListRouter) {
         self.interactor = interactor
@@ -107,6 +110,7 @@ class TaskListPresenter: ObservableObject {
     }
 
     func openTaskDetails(for task: Task) {
+        // Открытие экрана деталей задачи
         _ = router.navigateToTaskDetails(with: task)
     }
 

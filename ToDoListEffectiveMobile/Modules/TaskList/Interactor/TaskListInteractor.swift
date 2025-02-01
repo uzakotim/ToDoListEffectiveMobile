@@ -18,6 +18,7 @@ class TaskListInteractor: TaskListInteractorProtocol {
     private let context = PersistenceController.shared.container.viewContext
     
     func fetchTasks(completion: @escaping (Result<[Task], Error>) -> Void) {
+        // Загрузка задач из внешнего источника dummy JSON API
         DispatchQueue.global(qos: .userInitiated).async {
             guard let url = URL(string: "https://dummyjson.com/todos") else { return }
             
