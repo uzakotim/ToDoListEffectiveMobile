@@ -13,6 +13,7 @@ protocol TaskListRouterProtocol {
 
 class TaskListRouter: TaskListRouterProtocol {
     func navigateToTaskDetails(with task: Task) -> TaskDetailView {
+        // Перейти на экран задачи
         let interactor = TaskDetailInteractor(task: task)
         let router = TaskDetailRouter()
         let presenter = TaskDetailPresenter(interactor: interactor, router: router)
@@ -22,6 +23,7 @@ class TaskListRouter: TaskListRouterProtocol {
     }
     
     func createMainScreen() -> TaskListView {
+        // Перейти в главный лист
         let interactor = TaskListInteractor()
         let presenter = TaskListPresenter(interactor: interactor, router: self)
         let view = TaskListView(presenter: presenter)
