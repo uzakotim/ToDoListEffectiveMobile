@@ -7,8 +7,9 @@
 
 import Foundation
 
+// Протокол TaskDetailInteractorProtocol определяет интерфейс для получения информации о задаче
 protocol TaskDetailInteractorProtocol {
-    var task: Task { get }
+    var task: Task { get } // Свойство, представляющее текущую задачу
 }
 
 class TaskDetailInteractor: TaskDetailInteractorProtocol {
@@ -21,3 +22,4 @@ class TaskDetailInteractor: TaskDetailInteractorProtocol {
         return task
     }
 }
+
