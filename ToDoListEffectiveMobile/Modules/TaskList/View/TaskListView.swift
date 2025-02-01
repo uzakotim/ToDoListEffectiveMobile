@@ -114,3 +114,12 @@ struct TaskListView: View {
         }
     }
 }
+struct TaskListView_Previews: PreviewProvider {
+    static var previews: some View {
+        let interactor = TaskListInteractor()
+        let router = TaskListRouter()
+        let presenter = TaskListPresenter(interactor: interactor, router: router)
+
+        return TaskListView(presenter: presenter)
+    }
+}

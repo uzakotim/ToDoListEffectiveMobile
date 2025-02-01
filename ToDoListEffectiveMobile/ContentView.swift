@@ -14,7 +14,3 @@ struct ContentView: View {
         router.createMainScreen()
     }
 }
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-}
