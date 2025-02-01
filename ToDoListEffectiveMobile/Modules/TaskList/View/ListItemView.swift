@@ -8,10 +8,11 @@ import SwiftUI
 
 struct ListItemView: View {
     var task: Task
+    let isLast : Bool
     var body: some View {
         Section{
-            VStack(alignment: .leading){
-                VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0){
+                VStack(alignment: .leading, spacing: 0) {
                     HStack{
                         Image(systemName: task.isCompleted ? "checkmark.circle" : "circle")
                             .foregroundColor(.yellow)
@@ -20,34 +21,42 @@ struct ListItemView: View {
                             .font(.headline)
                             .strikethrough(task.isCompleted, color: Color(UIColor.placeholderText))
                             .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     HStack{
                         Image(systemName: "checkmark.circle")
                             .imageScale(.large)
                             .opacity(0)
+                            .frame(height: 0)
                         VStack(alignment: .leading) {
                             if !task.descriptionData.isEmpty
                             {
                                 Text(task.descriptionData)
                                     .font(.subheadline)
                                     .foregroundColor(task.isCompleted ? Color(UIColor.placeholderText) : .primary)
+                                    .lineLimit(nil)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                             Text(task.dateCreatedFormatted)
                                 .font(.footnote)
                                 .foregroundColor(Color(UIColor.placeholderText))
+                            
                             if task.descriptionData.isEmpty {
                                 Spacer()
                             }
-                        }.padding(0)
+                        }
                     }
-                    .padding(0)
                 }
-                .padding(0)
-                Spacer()
-                Divider()
-                    .frame(height: 1)
-                    .background(Color(UIColor.placeholderText))
-                    .padding(0)
+                if !task.descriptionData.isEmpty {
+                    Spacer()
+                }
+                if !isLast {
+                    Divider()
+                        .frame(height: 1)
+                        .background(Color(UIColor.placeholderText))
+                        .padding(0)
+                }
             }
         }
     }
@@ -64,6 +73,6 @@ struct ListItemView_Previews: PreviewProvider {
         )
 
 
-        return ListItemView(task: sampleTask)
+        return ListItemView(task: sampleTask, isLast: false)
     }
 }

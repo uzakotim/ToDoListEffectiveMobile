@@ -14,11 +14,11 @@ struct TaskList: View {
     @ObservedObject var presenter: TaskListPresenter
     @Binding var isNavigatingToTaskDetail: Bool
     @Binding var selectedTask: Task
-   
     var body: some View {
         List {
             ForEach(tasks) { task in
-                ListItemView(task: task)
+                let isLast = tasks.firstIndex(of: task)! == self.tasks.count - 1
+                ListItemView(task: task, isLast: isLast)
                     .contentShape(Rectangle())
                     .contextMenu {
                         Button(action: { onEdit(task) }) {
@@ -32,11 +32,11 @@ struct TaskList: View {
                         }
                     } preview: { CustomContextMenuPreviewView(task: task) }
                     .listRowSeparator(.hidden)
-                    .padding(0)
                     .onTapGesture {
                         presenter.toggleTask(task: task)
                     }
                     
+                
 
                     
             }
@@ -49,13 +49,13 @@ struct TaskList: View {
             }
             
         }
+       
         .environment(\.locale, Locale(identifier: "ru"))
         .listStyle(PlainListStyle())
         .background(Color(.systemBackground))
         .navigationDestination(isPresented: $isNavigatingToTaskDetail){
             presenter.router.navigateToTaskDetails(with: selectedTask)
         }
-        .listStyle(PlainListStyle())
         .frame(maxWidth: .infinity)
         .navigationTitle("Задачи")
         .onAppear {

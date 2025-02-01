@@ -15,7 +15,7 @@ struct TodosResponse: Codable {
     let skip: Int
     let limit: Int
 }
-struct Task: Identifiable, Codable{
+struct Task: Identifiable, Codable, Equatable{
     // Главная структура приложения
     let id: Int
     var title: String

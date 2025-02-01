@@ -11,26 +11,27 @@ struct CustomContextMenuPreviewView: View {
 
     var body: some View {
         HStack{
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(task.title)
                     .font(.headline)
                     .foregroundColor(.primary)
                     .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: false)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text(task.descriptionData)
                     .font(.subheadline)
                     .foregroundColor(.primary)
                     .lineLimit(nil)
-                    .fixedSize(horizontal: false, vertical: false)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text(task.dateCreatedFormatted)
                     .font(.caption)
                     .foregroundColor(.gray)
             }
+            .padding(24)
             Spacer()
         }
-        .padding(25)
+        .padding(24)
         .cornerRadius(12)
         .frame(minWidth: 200, maxWidth: 400)
     }
